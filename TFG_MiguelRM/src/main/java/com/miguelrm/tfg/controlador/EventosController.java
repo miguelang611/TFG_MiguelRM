@@ -120,7 +120,7 @@ public class EventosController {
 		model.addAttribute("tipo", "activos");
 		model.addAttribute("origen","/activos");
 
-		return "listaEventos";
+		return "listaEventosHiro";
 
 	}
 	
