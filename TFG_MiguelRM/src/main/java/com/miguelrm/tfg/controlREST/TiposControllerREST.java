@@ -71,8 +71,8 @@ public class TiposControllerREST {
 	@GetMapping("")
 	public String verTodos(Model model) {
 
-		List<Tipo> listaTipos = tiposDao.devuelveTipos().getListaTipos();
-		String mensajeTipos = tiposDao.devuelveTipos().getMensaje();
+		List<Tipo> listaTipos = tiposDao.devuelveTipos("").getListaTipos();
+		String mensajeTipos = tiposDao.devuelveTipos("").getMensaje();
 		
 		
 		return generaRespuesta(listaTipos,mensajeTipos,"");

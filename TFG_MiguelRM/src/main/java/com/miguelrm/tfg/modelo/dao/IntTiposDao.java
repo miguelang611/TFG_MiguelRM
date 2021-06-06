@@ -5,7 +5,7 @@ import com.miguelrm.tfg.modelo.beans.Tipo;
 
 public interface IntTiposDao {
 
-	public ListaTiposMensaje devuelveTipos();
+	public ListaTiposMensaje devuelveTipos(String forceActivos);
 	public ListaTiposMensaje devuelvePorId(int idTipo);
 	public String insertarTipo(Tipo miTipo);
 	public String editarTipo(Tipo miTipo);

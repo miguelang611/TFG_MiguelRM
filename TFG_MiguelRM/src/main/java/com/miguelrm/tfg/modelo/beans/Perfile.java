@@ -2,6 +2,7 @@ package com.miguelrm.tfg.modelo.beans;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -21,18 +22,21 @@ public class Perfile implements Serializable {
 
 	private String nombre;
 
+	//bi-directional many-to-many association to Usuario
+	@ManyToMany
+	@JoinTable(
+		name="usuario_perfiles"
+		, joinColumns={
+			@JoinColumn(name="ID_PERFIL")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="EMAIL")
+			}
+		)
+	private List<Usuario> usuarios;
+
 	public Perfile() {
 	}
-	
-	
-
-	public Perfile(int idPerfil, String nombre) {
-		super();
-		this.idPerfil = idPerfil;
-		this.nombre = nombre;
-	}
-
-
 
 	public int getIdPerfil() {
 		return this.idPerfil;
@@ -50,42 +54,12 @@ public class Perfile implements Serializable {
 		this.nombre = nombre;
 	}
 
-
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + idPerfil;
-		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-		return result;
+	public List<Usuario> getUsuarios() {
+		return this.usuarios;
 	}
 
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof Perfile))
-			return false;
-		Perfile other = (Perfile) obj;
-		if (idPerfil != other.idPerfil)
-			return false;
-		if (nombre == null) {
-			if (other.nombre != null)
-				return false;
-		} else if (!nombre.equals(other.nombre))
-			return false;
-		return true;
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}
 
-
-
-	@Override
-	public String toString() {
-		return "Perfile [idPerfil=" + idPerfil + ", nombre=" + nombre + "]";
-	}
-
-	
 }

@@ -18,12 +18,9 @@ public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID_USUARIO")
-	private int idUsuario;
+	private String email;
 
 	private String direccion;
-
-	private String email;
 
 	private int enabled;
 
@@ -35,56 +32,11 @@ public class Usuario implements Serializable {
 
 	private String password;
 
-	private String username;
-
-	//uni-directional many-to-many association to Perfile
-	@ManyToMany
-	@JoinTable(
-		name="usuario_perfiles"
-		, joinColumns={
-			@JoinColumn(name="ID_USUARIO")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="ID_PERFIL")
-			}
-		)
+	//bi-directional many-to-many association to Perfile
+	@ManyToMany(mappedBy="usuarios")
 	private List<Perfile> perfiles;
 
 	public Usuario() {
-	}
-	
-	
-
-	public Usuario(int idUsuario, String direccion, String email, int enabled, Date fechaRegistro, String nombre,
-			String password, String username, List<Perfile> perfiles) {
-		super();
-		this.idUsuario = idUsuario;
-		this.direccion = direccion;
-		this.email = email;
-		this.enabled = enabled;
-		this.fechaRegistro = fechaRegistro;
-		this.nombre = nombre;
-		this.password = password;
-		this.username = username;
-		this.perfiles = perfiles;
-	}
-
-
-
-	public int getIdUsuario() {
-		return this.idUsuario;
-	}
-
-	public void setIdUsuario(int idUsuario) {
-		this.idUsuario = idUsuario;
-	}
-
-	public String getDireccion() {
-		return this.direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
 	}
 
 	public String getEmail() {
@@ -93,6 +45,14 @@ public class Usuario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getDireccion() {
+		return this.direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 	public int getEnabled() {
@@ -127,14 +87,6 @@ public class Usuario implements Serializable {
 		this.password = password;
 	}
 
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public List<Perfile> getPerfiles() {
 		return this.perfiles;
 	}
@@ -143,64 +95,4 @@ public class Usuario implements Serializable {
 		this.perfiles = perfiles;
 	}
 
-
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((fechaRegistro == null) ? 0 : fechaRegistro.hashCode());
-		result = prime * result + idUsuario;
-		result = prime * result + ((perfiles == null) ? 0 : perfiles.hashCode());
-		result = prime * result + ((username == null) ? 0 : username.hashCode());
-		return result;
-	}
-
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof Usuario))
-			return false;
-		Usuario other = (Usuario) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (fechaRegistro == null) {
-			if (other.fechaRegistro != null)
-				return false;
-		} else if (!fechaRegistro.equals(other.fechaRegistro))
-			return false;
-		if (idUsuario != other.idUsuario)
-			return false;
-		if (perfiles == null) {
-			if (other.perfiles != null)
-				return false;
-		} else if (!perfiles.equals(other.perfiles))
-			return false;
-		if (username == null) {
-			if (other.username != null)
-				return false;
-		} else if (!username.equals(other.username))
-			return false;
-		return true;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "Usuario [idUsuario=" + idUsuario + ", direccion=" + direccion + ", email=" + email + ", enabled="
-				+ enabled + ", fechaRegistro=" + fechaRegistro + ", nombre=" + nombre + ", password=" + password
-				+ ", username=" + username + ", perfiles=" + perfiles + "]";
-	}
-
-	
-	
-	
 }

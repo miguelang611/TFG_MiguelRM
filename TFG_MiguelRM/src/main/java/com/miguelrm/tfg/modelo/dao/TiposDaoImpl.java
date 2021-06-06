@@ -59,19 +59,39 @@ public class TiposDaoImpl implements IntTiposDao {
 	}
 	
 	@Override
-	public ListaTiposMensaje devuelveTipos() {
+	public ListaTiposMensaje devuelveTipos(String forceActivos) {
 		
 		List<Tipo> miListaTipos = null;
+		List<Tipo> miListaNueva = null;
 		String mensaje = null;
 		try {
 			// Hemos definido este método en el TiposRepository,
 			// que interpreta a través de JPARepository
 			miListaTipos = miTiposRepo.findAll();
+			if(forceActivos.equals("activos") && miListaTipos != null && miListaTipos.size()>0) {
+				miListaNueva = miTiposRepo.findByNombreContains("");
+				for(int i=0; i<miListaTipos.size(); i++) {
+					List<Evento> listaEventos = eventosDao.devuelveByTipo(miListaTipos.get(i).getIdTipo()).getListaEventos();
+					if(listaEventos != null && listaEventos.size() >= 0 ) {
+						boolean containsActivos = false;
+						for(int a=0; a<listaEventos.size(); a++) {
+							if(listaEventos.get(a).getEstado().equals("activo")) {
+								containsActivos = true;
+							}
+						}
+						if(containsActivos) {
+							miListaNueva.add(miListaTipos.get(i));
+						}
+					}
+				}
+			}else {
+				miListaNueva = miListaTipos;
+			}
 		} catch (Exception e) {
 			mensaje = "Error de conexión a la BBDD";
 			e.printStackTrace();
 		}
-		ListaTiposMensaje miListaTiposMensaje = new ListaTiposMensaje(miListaTipos,mensaje);
+		ListaTiposMensaje miListaTiposMensaje = new ListaTiposMensaje(miListaNueva,mensaje);
 		return miListaTiposMensaje;
 	}
 	
@@ -130,8 +150,8 @@ public class TiposDaoImpl implements IntTiposDao {
 
 			// El mensaje no viene vacío pero la lista lo está --> no hay tipos con ese id
 			if (msgCheckID != null && !msgCheckID.contains("Error")) {
-				List<Tipo> miListaTotal = devuelveTipos().getListaTipos();
-				String mensaje = devuelveTipos().getMensaje();
+				List<Tipo> miListaTotal = devuelveTipos("").getListaTipos();
+				String mensaje = devuelveTipos("").getMensaje();
 				// Si no hay error
 				if (mensaje == null) {
 					// Y el tipo no está en la lista de tipos

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Eventos ${tipo}</title>
+<title>FORMULARIO DE ${accion} DE TIPOS</title>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,10 +23,17 @@
 </head>
 <body class="px-5 py-1">
 
-		
-		<!-- Tenemos una navbar que cuenta con dropdown, y con algunos elementos todavía desactivados,
-		COMÚN a todas las páginas -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- Muestra mensaje en H1 si falla algo -->
+	<c:if test="${mensaje != null}">
+		<br>
+		<h1 class="text-primary text-warning text-center">${mensaje}</h1>
+	</c:if>
+	
+<!-- Si todo ok -->
+	<c:if test="${mensaje == null}">
+
+<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
   <div class="container-fluid">
     <a class="navbar-brand" href="#">MRM</a>
@@ -88,37 +95,15 @@
 </nav>
 
 
-
 <!-- Header -->
 		<header class="text-center">
 			<br>
-			<h1>FORMULARIO DE ${accion} DE EVENTOS</h1>
+			<h1>FORMULARIO DE ${accion} DE TIPOS</h1>
 			<h1>${mensaje}</h1>
 			<br>
 		</header>
 
 
-<!-- Main con formulario:
-
-Es común para la creación y para la edición de eventos; pero leemos con "accion" el tipo que es
-y actuamos en consecuencia.
-
-Traemos la lista de eventos siempre, para que con un desplegable podamos escoger el tipo
-por número y nombre
-
-Cuando estamos creando un nuevo evento, no se muestran opciones de ID, ni de activo,
-ya que el ID se asigna vía autoincrement y todos los eventos nuevos son activoss
-
-Por otro lado, se utilizan value leyendo las variables del evento para su edición,
-además de algún if vía JSTL para determinar si es selected cuando son opciones de select
-como estado, destacado o tipo de evento
-
-Para los campos numéricos, salvo el precio, se opta por un slider
-
-Así mismo, todo el formulario se valida vía script con ayuda de Bootstrap
-utilizando expresiones regulares acordes a cada campo y con mensajes personalizados
-
--->
 <!-- Main con formulario:
 
 Se basa en el formulario de eventos y sigue el mismo patrón de funcionamiento, siendo
@@ -142,8 +127,9 @@ mucho más simple por la menor cantidad de datos de tipo vs evento
 				<article class="col-md-4">
 					<label for="nombreInput" class="form-label">Nombre</label> <input
 						type="text" name="nombre" class="form-control" id="nombreInput"
-					 value="${tipo.nombre}" placeholder="${tipo.nombre}"
-						pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\sº]{3,}"  required>
+						pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s]{3,}" value="${tipo.nombre}"
+						placeholder="${tipo.nombre}"
+						pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s]{3,}"  required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Este nombre no es válido!</div>
 				</article>
@@ -153,7 +139,7 @@ mucho más simple por la menor cantidad de datos de tipo vs evento
 					<input type="text" name="descripcion" class="form-control"
 						id="descripcionInput" value="${tipo.descripcion}"
 						placeholder="${tipo.descripcion}"
-						pattern="^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-º]{10,}"  required>
+						pattern="{^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-]{10,}"  required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Comprueba que la descripción
 						sea correcta y detallada!</div>
@@ -165,6 +151,14 @@ mucho más simple por la menor cantidad de datos de tipo vs evento
 				</div>
 			</form>
 		</main>
+
+	</c:if>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
 	<script>
 		//Example starter JavaScript for disabling form submissions if there are invalid fields
 		(function() {

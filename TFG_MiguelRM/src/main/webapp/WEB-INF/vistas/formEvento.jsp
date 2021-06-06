@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Eventos ${tipo}</title>
+<title>FORMULARIO DE ${accion} DE EVENTOS</title>
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,9 +23,16 @@
 </head>
 <body class="px-5 py-1">
 
-		
-		<!-- Tenemos una navbar que cuenta con dropdown, y con algunos elementos todavía desactivados,
-		COMÚN a todas las páginas -->
+<!-- Muestra mensaje en H1 si falla algo -->
+	<c:if test="${mensaje != null}">
+		<br>
+		<h1 class="text-primary text-warning text-center">${mensaje}</h1>
+	</c:if>
+	
+<!-- Si todo ok -->
+	<c:if test="${mensaje == null}">
+
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
   <div class="container-fluid">
@@ -37,18 +44,18 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/eventos/todos">Eventos</a>
+          <a class="nav-link" aria-current="page" href="/gestion/eventos/todos">Eventos</a>
         </li>
         
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/eventos/activos">Eventos Activos</a>
+          <a class="nav-link" aria-current="page" href="/gestion/eventos/activos">Eventos Activos</a>
         </li>
         
 
         
         <li class="nav-item">
-          <a class="nav-link" href="/eventos/destacados">Eventos Destacados</a>
+          <a class="nav-link" href="/gestion/eventos/destacados">Eventos Destacados</a>
         </li>
         
         <li class="nav-item dropdown">
@@ -56,8 +63,8 @@
             Eventos/tipo
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-    		<c:forEach items="${listaTipos}" var="miTipo" varStatus="varEstado">
-    		    <li><a class="dropdown-item" href="/eventos/${miTipo.idTipo}">${miTipo.idTipo} - ${miTipo.nombre}</a></li>
+    		<c:forEach items="${listaTiposFull}" var="miTipo" varStatus="varEstado">
+    		    <li><a class="dropdown-item" href="/gestion/eventos/${miTipo.idTipo}">${miTipo.idTipo} - ${miTipo.nombre}</a></li>
 			</c:forEach>
           </ul>
         </li>
@@ -86,7 +93,6 @@
     </div>
   </div>
 </nav>
-
 
 
 <!-- Header -->
@@ -154,7 +160,7 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 				<article class="col-md-4">
 					<label for="nombreInput" class="form-label">Nombre</label> <input
 						type="text" name="nombre" class="form-control" id="nombreInput"
-						pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\sº]{3,}" value="${evento.nombre}"
+						pattern="^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.\s]{3,}" value="${evento.nombre}"
 						placeholder="${evento.nombre}" required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Este nombre no es válido!</div>
@@ -165,7 +171,7 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 					<input type="text" name="descripcion" class="form-control"
 						id="descripcionInput" value="${evento.descripcion}"
 						placeholder="${evento.descripcion}"
-						pattern="^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-º]{10,}" required>
+						pattern="{^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-]{10,}" required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Comprueba que la descripción
 						sea correcta y detallada!</div>
@@ -217,7 +223,7 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 					<select name="Tipo.idTipo" class="form-select" id="tipoInput"
 						value="${evento.tipo.idTipo}"
 						placeholder="${evento.tipo}" required>
-						<c:forEach items="${listaTipos}" var="tipo" varStatus="varEstado">
+						<c:forEach items="${listaTiposFull}" var="tipo" varStatus="varEstado">
 						<option value="${tipo.idTipo}"
 						<c:if test="${evento.tipo.idTipo == tipo.idTipo}">
 						selected
@@ -235,7 +241,7 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 						type="text" name="direccion" class="form-control"
 						id="direccionInput" value="${evento.direccion}"
 						placeholder="${evento.direccion}"
-						pattern="^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-º]{8,}" required>
+						pattern="{^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-]{8,}" required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Comprueba que la dirección
 						tenga todos los datos!</div>
@@ -279,6 +285,16 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 						
 				</article>
 				
+				<article class="col-md-8 justify-content-center">
+					<label for="imgInput" class="form-label">URL Imagen</label>
+					<input type="text" name="img" class="form-control"
+						id="imgInput" value="${evento.img}"
+						placeholder="${evento.img}"
+						required>
+					<div class="valid-feedback">¡Tiene buena pinta!</div>
+					<div class="invalid-feedback">¡Comprueba que la URL de ruta sea correcta!</div>
+				</article>
+				
 				</div>				
 				
 				<div class="col-12 text-center">
@@ -287,6 +303,15 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 				</div>
 			</form>
 		</main>
+
+	</c:if>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+		crossorigin="anonymous"></script>
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+	<!-- Función para manejar validación -->
 	<script>
 		//Example starter JavaScript for disabling form submissions if there are invalid fields
 		(function() {

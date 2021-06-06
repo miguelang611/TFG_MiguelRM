@@ -120,63 +120,8 @@ public class EventosController {
 		model.addAttribute("tipo", "activos");
 		model.addAttribute("origen","/activos");
 
-		return "listaEventosHiro";
+		return "buyEventos";
 
-	}
-	
-	@GetMapping("/cancelados")
-	public String verCancelados(Model model) {
-
-		List<Evento> listaEventos = eventosDao.devuelveByEstado("cancelado").getListaEventos();
-		String mensaje = eventosDao.devuelveByEstado("cancelado").getMensaje();
-		
-		model = mandaListaTipos(model);
-
-		if (listaEventos != null) {
-			if (listaEventos.size() == 0 && mensaje == null) {
-				mensaje = "No se han encontrado eventos cancelados en este momento";
-			}
-		}
-		
-		model.addAttribute("mensajeError", mensaje);
-		
-		model.addAttribute("miListaEventos", listaEventos);
-		model.addAttribute("tipo", "cancelados");
-		model.addAttribute("origen","/cancelados");
-
-		return "listaEventos";
-
-	}
-	
-	/*
-	 * =================================== MÉTODO VERTODOS =================================== 
-	 * 
-	 * Procedimiento análogo al anterior, sólo que invocando otro método
-	 * 
-	 * =========================================================================================== 
-	 */
-	
-	@GetMapping("/todos")
-	public String verTodos(Model model) {
-
-		List<Evento> listaEventos = eventosDao.devuelveTodos().getListaEventos();
-		String mensaje = eventosDao.devuelveTodos().getMensaje();
-
-		model = mandaListaTipos(model);
-
-		if (listaEventos != null) {
-			if (listaEventos.size() == 0 && mensaje == null) {
-				mensaje = "No se han encontrado eventos en este momento";
-			}
-		}
-		
-		model.addAttribute("mensajeError", mensaje);
-		
-		model.addAttribute("miListaEventos", listaEventos);
-		model.addAttribute("tipo", "(todos)");
-		model.addAttribute("origen","/todos");
-
-		return "listaEventos";
 	}
 	
 	/*
@@ -213,7 +158,66 @@ public class EventosController {
 
 	}
 	
-	@GetMapping("/nodestacados")
+	/* A PARTIR DE AQUÍ TENEMOS ACCESO RESTRINGIDO ÚNICAMENTE A ORGANIZADORES Y ADMINISTRADOR */
+	
+	@GetMapping("/gestion/cancelados")
+	public String verCancelados(Model model) {
+
+		List<Evento> listaEventos = eventosDao.devuelveByEstado("cancelado").getListaEventos();
+		String mensaje = eventosDao.devuelveByEstado("cancelado").getMensaje();
+		
+		model = mandaListaTipos(model);
+
+		if (listaEventos != null) {
+			if (listaEventos.size() == 0 && mensaje == null) {
+				mensaje = "No se han encontrado eventos cancelados en este momento";
+			}
+		}
+		
+		model.addAttribute("mensajeError", mensaje);
+		
+		model.addAttribute("miListaEventos", listaEventos);
+		model.addAttribute("tipo", "cancelados");
+		model.addAttribute("origen","/cancelados");
+
+		return "listaEventos";
+
+	}
+	
+	/*
+	 * =================================== MÉTODO VERTODOS =================================== 
+	 * 
+	 * Procedimiento análogo al anterior, sólo que invocando otro método
+	 * 
+	 * =========================================================================================== 
+	 */
+	
+	@GetMapping("/gestion/todos")
+	public String verTodos(Model model) {
+
+		List<Evento> listaEventos = eventosDao.devuelveTodos().getListaEventos();
+		String mensaje = eventosDao.devuelveTodos().getMensaje();
+
+		model = mandaListaTipos(model);
+
+		if (listaEventos != null) {
+			if (listaEventos.size() == 0 && mensaje == null) {
+				mensaje = "No se han encontrado eventos en este momento";
+			}
+		}
+		
+		model.addAttribute("mensajeError", mensaje);
+		
+		model.addAttribute("miListaEventos", listaEventos);
+		model.addAttribute("tipo", "(todos)");
+		model.addAttribute("origen","/todos");
+
+		return "listaEventos";
+	}
+	
+
+	
+	@GetMapping("/gestion/nodestacados")
 	public String verNoDestacados(Model model) {
 
 		List<Evento> listaEventos = eventosDao.devuelveByDestacado("").getListaEventos();
@@ -339,7 +343,7 @@ public class EventosController {
 	 * ================================================================================================= 
 	 */
 	
-	@GetMapping("/estado/{id}/{url}/{estado}")
+	@GetMapping("/gestion/estado/{id}/{url}/{estado}")
 	public String cancelar(RedirectAttributes miRedirAttrib, @PathVariable(name = "id") int idEvento, @PathVariable(name = "url") String destino, @PathVariable(name="estado") String estado ) {
 		String mensaje = "";
 		if(estado.equals("activo") || estado.equals("cancelado")) {
@@ -361,7 +365,7 @@ public class EventosController {
 
 	}
 	
-	@GetMapping("/destacar/{id}/{url}/{destacado}")
+	@GetMapping("/gestion/destacar/{id}/{url}/{destacado}")
 	public String destacar(RedirectAttributes miRedirAttrib, @PathVariable(name = "id") int idEvento, @PathVariable(name = "url") String destino, @PathVariable(name="destacado") String destacado) {
 		String mensaje = "";
 		
@@ -389,7 +393,7 @@ public class EventosController {
 
 	}
 
-	@GetMapping("/eliminar/{id}/{url}")
+	@GetMapping("/gestion/eliminar/{id}/{url}")
 	public String eliminar(RedirectAttributes miRedirAttrib, @PathVariable(name = "id") int idEvento, @PathVariable(name = "url") String destino) {
 		String mensaje = "";
 		try {
@@ -427,7 +431,7 @@ public class EventosController {
 	 * ================================================================================================= 
 	 */
 	
-	@GetMapping("/create/{url}")
+	@GetMapping("/gestion/create/{url}")
 	public String goToNuevo(Model model, @PathVariable(name = "url") String origen) {
 
 		
@@ -439,7 +443,7 @@ public class EventosController {
 
 	}
 	
-	@GetMapping("/editar/{id}/{url}")
+	@GetMapping("/gestion/editar/{id}/{url}")
 	public String editar(Model model, @PathVariable(name = "id") int idEvento, @PathVariable(name = "url") String origen) {
 
 		List<Evento> listaEventos = eventosDao.devuelvePorId(idEvento).getListaEventos();
@@ -491,7 +495,7 @@ public class EventosController {
 	 * ================================================================================================= 
 	 */
 	
-	@PostMapping("/procesaCreate/{url}")
+	@PostMapping("/gestion/procesaCreate/{url}")
 	public String procesarFormulario(RedirectAttributes miRedirAttrib, @PathVariable(name = "url") String destino, Evento evento) {
 
 		System.out.println(evento);
@@ -513,7 +517,7 @@ public class EventosController {
 	}
 	
 
-	@GetMapping("/procesaEditar/{url}")
+	@GetMapping("/gestion/procesaEditar/{url}")
 	public String procesarEditarEvento(RedirectAttributes miRedirAttrib,  @PathVariable(name = "url") String destino, Evento evento) {
 		
 		String mensaje = null;

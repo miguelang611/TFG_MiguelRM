@@ -33,6 +33,8 @@ public class Evento implements Serializable {
 	private String destacado;
 
 	private String direccion;
+	
+	private String img;
 
 	private int duracion;
 
@@ -58,7 +60,7 @@ public class Evento implements Serializable {
 	private Tipo tipo;
 
 	public Evento(int idEvento, int aforoMaximo, String descripcion, String destacado, String direccion, int duracion,
-			String estado, Date fechaInicio, int minimoAsistencia, String nombre, BigDecimal precio, Tipo tipo) {
+			String estado, Date fechaInicio, int minimoAsistencia, String nombre, BigDecimal precio, Tipo tipo,  String img) {
 		super();
 		this.idEvento = idEvento;
 		this.aforoMaximo = aforoMaximo;
@@ -72,6 +74,7 @@ public class Evento implements Serializable {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.tipo = tipo;
+		this.img = img;
 	}
 
 
@@ -108,6 +111,14 @@ public class Evento implements Serializable {
 
 	public void setDestacado(String destacado) {
 		this.destacado = destacado;
+	}
+
+	public String getImg() {
+		return this.img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public String getDireccion() {

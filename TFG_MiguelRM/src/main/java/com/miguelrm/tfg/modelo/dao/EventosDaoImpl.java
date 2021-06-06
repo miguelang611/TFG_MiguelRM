@@ -124,6 +124,7 @@ public class EventosDaoImpl implements IntEventosDao {
 		String mensaje = null;
 		try {
 			miListaEventos = miEventosRepo.findByTipo(idTipo);
+			System.out.println(miListaEventos);
 		} catch (Exception e) {
 			mensaje = "Error -> fallo de conexión a la BBDD";
 			e.printStackTrace();
@@ -158,7 +159,6 @@ public class EventosDaoImpl implements IntEventosDao {
 				// Si no había encontrado nada por nombre, la lista lo que encuentre por
 				// descripción
 				if (miListaEvNombre.size() == 0) {
-					System.out.println("AAAAAAAAA");
 					miListaEventos = miListaEvDescripcion;
 
 					// PERO, si la lista obtenida por nombre tiene algún dato,
@@ -177,7 +177,7 @@ public class EventosDaoImpl implements IntEventosDao {
 
 			}
 		} catch (Exception e) {
-			mensaje = "Error -> fallo de conexión a la BBDD";
+			mensaje = "Error de conexión a la BBDD";
 			e.printStackTrace();
 		}
 		ListaEventosMensaje miListaEventosMensaje = new ListaEventosMensaje(miListaEventos, mensaje);
@@ -432,7 +432,7 @@ public class EventosDaoImpl implements IntEventosDao {
 			}
 
 			// El mensaje no viene vacío pero la lista lo está --> no hay eventos con ese id
-			if (msgCheckID != null && !msgCheckID.contains("Error")) {
+			if (msgCheckID != null && !msgCheckID.contains("Error") && !msgCheckID.contains("Error -> Evento con ID 0 no encontrado")) {
 				List<Evento> miListaTotal = devuelveTodos().getListaEventos();
 				String mensaje = devuelveTodos().getMensaje();
 				// Si no hay error
@@ -453,8 +453,12 @@ public class EventosDaoImpl implements IntEventosDao {
 				}
 			}
 
-			if (msgCheckID != null && msgCheckID.contains("Error")) {
-				insertarRdo = msgCheckID;
+			if(msgCheckID != null && msgCheckID.contains("Error -> Evento con ID 0 no encontrado")) {
+				
+				miEventosRepo.save(miEvento);
+				insertarRdo = "El evento " + miEvento.getNombre() + " se ha insertado correctamente";
+
+				
 			}
 			
 		} catch (Exception e) {

@@ -29,7 +29,7 @@ public class Noticia implements Serializable {
 
 	//uni-directional many-to-one association to Usuario
 	@ManyToOne
-	@JoinColumn(name="ID_USUARIO")
+	@JoinColumn(name="EMAIL")
 	private Usuario usuario;
 
 	//uni-directional many-to-one association to Categoria
