@@ -22,18 +22,9 @@ public class Perfile implements Serializable {
 
 	private String nombre;
 
-	//bi-directional many-to-many association to Usuario
-	@ManyToMany
-	@JoinTable(
-		name="usuario_perfiles"
-		, joinColumns={
-			@JoinColumn(name="ID_PERFIL")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="EMAIL")
-			}
-		)
-	private List<Usuario> usuarios;
+	/*
+	@Column(name="EMAIL")
+	private String email;*/
 
 	public Perfile() {
 	}
@@ -54,12 +45,5 @@ public class Perfile implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public List<Usuario> getUsuarios() {
-		return this.usuarios;
-	}
-
-	public void setUsuarios(List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
 
 }

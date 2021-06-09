@@ -98,7 +98,7 @@
 <!-- Header -->
 		<header class="text-center">
 			<br>
-			<h1>FORMULARIO DE ${accion} DE EVENTOS</h1>
+			<h1>FORMULARIO DE ${accion} DE NOTICIAS</h1>
 			<h1>${mensaje}</h1>
 			<br>
 		</header>
@@ -138,21 +138,6 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 							value="${noticia.idNoticia}" required readonly>
 					</article>
 					
-					<article class="col-md-4">
-					<label for="estadoInput" class="form-label">¿Estado?</label>
-					<select name="estado" class="form-select" id="estadoInput"
-					 required>
-
-						<option value="activo"
-						<c:if test="${noticia.estado == 'activo'}">selected</c:if>
-						>Activo</option>
-						<option value="cancelado"
-						<c:if test="${noticia.estado == 'cancelado'}">selected</c:if>
-						>Cancelado</option>
-						
-					</select>
-					<div class="valid-feedback">¡Tiene buena pinta!</div>
-					<div class="invalid-feedback">¡Escoge una opción porfa!</div>
 				</article>
 
 				</c:if>
@@ -167,21 +152,22 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 				</article>
 
 				<article class="col-md-8">
-					<label for="descripcionInput" class="form-label">Descripción</label>
+					<label for="descripcionInput" class="form-label">Subtítulo</label>
 					<input type="text" name="descripcion" class="form-control"
-						id="descripcionInput" value="${noticia.descripcion}"
-						placeholder="${noticia.descripcion}"
+						id="descripcionInput" value="${noticia.subtitulo}"
+						placeholder="${noticia.subtitulo}"
 						pattern="{^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-]{10,}" required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Comprueba que la descripción
 						sea correcta y detallada!</div>
 				</article>
+			
 
 				<article class="col-md-4">
-					<label for="fechaInicioInput" class="form-label">Fecha de
-						inicio</label> <input type="date" name="fechaInicio" class="form-control"
-						id="fechaInicioInput" value="${noticia.fechaInicio}"
-						placeholder="${noticia.fechaInicio}" required>
+					<label for="fechaInput" class="form-label">Fecha de
+						inicio</label> <input type="date" name="fecha" class="form-control"
+						id="fechaInput" value="${noticia.fecha}"
+						placeholder="${noticia.fecha}" required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Comprueba que la fecha sea
 						correcta!</div>
@@ -206,24 +192,14 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 				</article>
 
 
-				
-				<article class="col-md-4">
-					<label for="precioInput" class="form-label">Precio</label>
-					<input type="text" name="precio" class="form-control"
-						id="precioInput" value="${noticia.precio}"
-						placeholder="${noticia.precio}"
-						pattern="^[0-9.]{1,}"  required>
-					<div class="valid-feedback">¡Tiene buena pinta!</div>
-					<div class="invalid-feedback">¡Comprueba que el precio sea correcto! ¡No uses decimales con ","!</div>
-				</article>
 			
 				
 				<article class="col-md-4">
-					<label for="categoriaInput" class="form-label">Categoria de noticia</label>
+					<label for="categoriaInput" class="form-label">Categoría de noticia</label>
 					<select name="Categoria.idCategoria" class="form-select" id="categoriaInput"
 						value="${noticia.categoria.idCategoria}"
 						placeholder="${noticia.categoria}" required>
-						<c:forEach items="${listaCategoriasFull}" var="categoria" varStatus="varEstado">
+						<c:forEach items="${listaCategorias}" var="categoria" varStatus="varEstado">
 						<option value="${categoria.idCategoria}"
 						<c:if test="${noticia.categoria.idCategoria == categoria.idCategoria}">
 						selected
@@ -236,55 +212,10 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 					<div class="invalid-feedback">¡Escoge una opción porfa!</div>
 				</article>
 				
-				<article class="col-md-8">
-					<label for="direccionInput" class="form-label">Dirección</label> <input
-						type="text" name="direccion" class="form-control"
-						id="direccionInput" value="${noticia.direccion}"
-						placeholder="${noticia.direccion}"
-						pattern="{^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-]{8,}" required>
-					<div class="valid-feedback">¡Tiene buena pinta!</div>
-					<div class="invalid-feedback">¡Comprueba que la dirección
-						tenga todos los datos!</div>
-				</article>
 				
 				<div class="row g-3 justify-content-center">
 				
-				<article class="col-md-8">
-					<label for="duracionInput" class="form-label" id="labDuracion">Duración (horas): ${noticia.duracion}</label>
-					<input onInput="$('#labDuracion').html('Duración: '+$(this).val()+' horas')"
-						name="duracion" class="form-range" id="duracionInput"
-						value="${noticia.duracion}" type="range" class="form-range" min="1"
-						max="20" step="1" placeholder="${noticia.duracion}" required>
-					<div class="valid-feedback">¡Tiene buena pinta!</div>
-					<div class="invalid-feedback">¡Comprueba que la duración sea
-						un número!</div>
-						
-				</article>
 
-				<article class="col-md-8 justify-content-center">
-					<label for="aforoMaximoInput" class="form-label" id="labAforoMaximo">Aforo Máximo (personas): ${noticia.aforoMaximo}</label>
-					<input onInput="$('#labAforoMaximo').html('Aforo Máximo: '+$(this).val()+' personas')"
-						name="aforoMaximo" class="form-range" id="aforoMaximoInput"
-						value="${noticia.aforoMaximo}" type="range" class="form-range" min="100"
-						max="10000" step="100" placeholder="${noticia.aforoMaximo}" required>
-					<div class="valid-feedback">¡Tiene buena pinta!</div>
-					<div class="invalid-feedback">¡Comprueba que la duración sea
-						un número!</div>
-						
-				</article>
-
-				<article class="col-md-8 justify-content-center">
-					<label for="minimoAsistenciaInput" class="form-label" id="labMinAsitencia">Mínimo de Asistencia (personas): ${noticia.minimoAsistencia}</label>
-					<input onInput="$('#labMinAsitencia').html('Mínimo de Asistencia: '+$(this).val()+' personas')"
-						name="minimoAsistencia" class="form-range" id="minimoAsistenciaInput"
-						value="${noticia.minimoAsistencia}" type="range" class="form-range" min="20"
-						max="1000" step="20" placeholder="${noticia.minimoAsistencia}" required>
-					<div class="valid-feedback">¡Tiene buena pinta!</div>
-					<div class="invalid-feedback">¡Comprueba que la asistencia sea
-						un número!</div>
-						
-				</article>
-				
 				<article class="col-md-8 justify-content-center">
 					<label for="imgInput" class="form-label">URL Imagen</label>
 					<input type="text" name="img" class="form-control"
@@ -293,6 +224,17 @@ utilizando expresiones regulares acordes a cada campo y con mensajes personaliza
 						required>
 					<div class="valid-feedback">¡Tiene buena pinta!</div>
 					<div class="invalid-feedback">¡Comprueba que la URL de ruta sea correcta!</div>
+				</article>
+				
+				<article class="col-md-12 justify-content-center">
+					<label for="detalleInput" class="form-label">Cuerpo</label>
+					<textarea name="detalle" class="form-control"
+						id="detalleInput" value="${noticia.detalle}"
+						placeholder="${noticia.detalle}"
+						pattern="{^[#.0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\s,-]{50,}" required></textarea>
+					<div class="valid-feedback">¡Tiene buena pinta!</div>
+					<div class="invalid-feedback">¡Comprueba que el cuerpo
+						sea correcto y detallado!</div>
 				</article>
 				
 				</div>				

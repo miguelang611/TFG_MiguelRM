@@ -163,7 +163,7 @@
 	
 	<sec:authorize access="hasAnyAuthority('admin','redactor')">
 			<!-- Navbar -->
-	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: grey">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: cyan;">
 
 		<div class="collapse navbar-collapse">
 							<div class="nav-item">

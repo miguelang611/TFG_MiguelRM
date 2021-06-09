@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miguelrm.tfg.modelo.beans.Noticia;
 import com.miguelrm.tfg.modelo.beans.Categoria;
 import com.miguelrm.tfg.modelo.dao.IntNoticiasDao;
+import com.miguelrm.tfg.servicios.IntPreparaServ;
+import com.miguelrm.tfg.servicios.PreparaServImpl;
 import com.miguelrm.tfg.modelo.dao.IntCategoriasDao;
 
 
@@ -43,41 +46,10 @@ public class NoticiasPublicController {
 
 	@Autowired
 	IntCategoriasDao categoriasDao;
-
-	/*
-	 * ============================= MÉTODO AUXILIAR MANDALISTATIPOS ============================= 
-	 * 
-	 * Tenemos un método auxiliar que llamaremos desde los métodos principales que se encarga
-	 * de devolver la lista con los categorias. 
-	 * 
-	 * Al ser el public controller, filtraremos los categorias por aquellos que tienen noticias activos,
-	 * el resto serán eliminados, aunque existan en la BD
-	 * 
-	 * =========================================================================================== 
-	 */
-
-	public Model mandaListaCategorias(Model model) {
-		
-		String mensaje = "";
-		List<Categoria> listaCategorias = categoriasDao.devuelveCategorias("").getListaCategorias();
-		String mensajeCategorias = categoriasDao.devuelveCategorias("").getMensaje();
-
-		if (listaCategorias != null) {
-			if (listaCategorias.size() == 0 && mensajeCategorias == null) {
-				mensajeCategorias = "No se han encontrado categorias en la Base de Datos";
-			}
-		}
-
-		if (mensajeCategorias != null) {
-			mensaje = "Error con los categorias de noticias: " + mensajeCategorias;
-		}
-		System.out.println(listaCategorias);
-		model.addAttribute("listaCategorias", listaCategorias);
-		model.addAttribute("mensajeError",mensaje);
 	
-	
-	return model;
-}
+	@Autowired
+	IntPreparaServ prepWeb;
+
 	 
 	/////////////////////////////////////// BLOQUE 1 --> LISTA  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -92,7 +64,7 @@ public class NoticiasPublicController {
 	 * 2. Si la lista no es nula, el mensaje es nulo, y el tamaño es 0 --> la conexión y todo es
 	 * correcto, sólo que no hay noticias activos
 	 * 
-	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a mandaListaCategorias, para que
+	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a prepWeb.envia, para que
 	 * nos traiga la lista de categorias en el model y luego poder usarla en el nav
 	 * 
 	 * 4. Agregamos al model el mensaje, la lista de noticias, el categoria de lista
@@ -109,7 +81,7 @@ public class NoticiasPublicController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveTodos().getListaNoticias();
 		String mensaje = noticiasDao.devuelveTodos().getMensaje();
 		
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		if (listaNoticias != null) {
 			if (listaNoticias.size() == 0 && mensaje == null) {
@@ -120,10 +92,10 @@ public class NoticiasPublicController {
 		model.addAttribute("mensajeError", mensaje);
 		
 		model.addAttribute("miListaNoticias", listaNoticias);
-		model.addAttribute("categoria", "activos");
+		model.addAttribute("categoria", "Noticias");
 		model.addAttribute("origen","/activos");
 
-		return "noticias/buyNoticias";
+		return "noticias/publicNoticias";
 
 	}
 	
@@ -142,7 +114,7 @@ public class NoticiasPublicController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveByDestacada("s").getListaNoticias();
 		String mensaje = noticiasDao.devuelveByDestacada("s").getMensaje();
 
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		if (listaNoticias != null) {
 			if (listaNoticias.size() == 0 && mensaje == null) {
@@ -153,16 +125,16 @@ public class NoticiasPublicController {
 		model.addAttribute("mensajeError", mensaje);
 		
 		model.addAttribute("miListaNoticias", listaNoticias);
-		model.addAttribute("categoria", "destacadas");
+		model.addAttribute("categoria", "Noticias destacadas");
 		model.addAttribute("origen","/destacadas");
 
 
-		return "noticias/buyNoticias";
+		return "noticias/publicNoticias";
 
 	}
 	
-	@GetMapping("/contiene/{palabra}")
-	public String verPorPalabra(Model model, @PathVariable (name="palabra") String palabra) {
+	@GetMapping("/contiene")
+	public String verPorPalabra(Model model, @RequestParam (name="palabra") String palabra) {
 		
 		List<Noticia> listaNoticias = null;
 		String mensaje = "";
@@ -173,7 +145,7 @@ public class NoticiasPublicController {
 			if(listaNoticias == null || listaNoticias.size() == 0 ) {
 				mensaje = "No hay noticias que contengan la palabra "+palabra;
 			}
-			categoria = "que contienen '"+palabra+"'";
+			categoria = "Noticias que contienen '"+palabra+"'";
 		}else {
 			mensaje = "Error: Indique una palabra correcta";
 		}
@@ -186,7 +158,7 @@ public class NoticiasPublicController {
 		model.addAttribute("categoria", categoria);
 		model.addAttribute("origen","/contiene/"+palabra);
 		
-		return "noticias/buyNoticias";
+		return "noticias/publicNoticias";
 	}
 	
 	/*
@@ -219,7 +191,7 @@ public class NoticiasPublicController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveByCategoria(idCategoria).getListaNoticias();
 		String mensaje = noticiasDao.devuelveByCategoria(idCategoria).getMensaje();		
 		
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		String nombreCategoria = "";
 		Categoria categoria = null;
@@ -252,7 +224,7 @@ public class NoticiasPublicController {
 		}
 		
 		if (mensaje == null) {
-			model.addAttribute("categoria","del categoria "+nombreCategoria);
+			model.addAttribute("categoria",nombreCategoria);
 		}else {
 			model.addAttribute("mensajeError", mensaje);
 		}
@@ -262,7 +234,7 @@ public class NoticiasPublicController {
 		model.addAttribute("mensajeError", mensaje);
 		model.addAttribute("origen","/categoria/{"+idCategoria+"}");
 		
-		return "noticias/buyNoticias";
+		return "noticias/publicNoticias";
 		
 	}
 	
@@ -273,7 +245,7 @@ public class NoticiasPublicController {
 		String mensaje = noticiasDao.devuelvePorId(idNoticia).getMensaje();
 		System.out.println(listaNoticias);
 		System.out.println(mensaje);
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 		
 		List<Noticia> listaDestacadas = noticiasDao.devuelveByDestacada("s").getListaNoticias();
 		for(int i=listaDestacadas.size() - 1; i > 1; i--) {
@@ -300,7 +272,7 @@ public class NoticiasPublicController {
 		model.addAttribute("noticia", miNoticia);
 
 
-		return "detalleNoticia";
+		return "noticias/detalleNoticia";
 
 	}
 	

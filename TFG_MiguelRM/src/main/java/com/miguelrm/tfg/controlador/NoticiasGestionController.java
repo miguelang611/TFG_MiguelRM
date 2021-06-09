@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.miguelrm.tfg.modelo.beans.Noticia;
 import com.miguelrm.tfg.modelo.beans.Categoria;
 import com.miguelrm.tfg.modelo.dao.IntNoticiasDao;
+import com.miguelrm.tfg.servicios.IntPreparaServ;
+import com.miguelrm.tfg.servicios.PreparaServImpl;
 import com.miguelrm.tfg.modelo.dao.IntCategoriasDao;
 
 
@@ -43,41 +45,9 @@ public class NoticiasGestionController {
 
 	@Autowired
 	IntCategoriasDao categoriasDao;
-
-	/*
-	 * ============================= MÉTODO AUXILIAR MANDALISTATIPOS ============================= 
-	 * 
-	 * Tenemos un método auxiliar que llamaremos desde los métodas principales que se encarga
-	 * de devolver la lista con los categorias. Esto es necesario para toda la aplicación:
-	 *
-	 * En lista: porque en el nav tenemos noticias por categoria
-	 * En creación y edición: además de por eso, porque usaremos la lista para un desplegable
-	 * 
-	 * =========================================================================================== 
-	 */
-
-	public Model mandaListaCategorias(Model model) {
-		
-			String mensaje = "";
-			List<Categoria> listaCategorias = categoriasDao.devuelveCategorias("").getListaCategorias();
-			String mensajeCategorias = categoriasDao.devuelveCategorias("").getMensaje();
-
-			if (listaCategorias != null) {
-				if (listaCategorias.size() == 0 && mensajeCategorias == null) {
-					mensajeCategorias = "No se han encontrado categorias en la Base de Datos";
-				}
-			}
-
-			if (mensajeCategorias != null) {
-				mensaje = "Error con los categorias de noticias: " + mensajeCategorias;
-			}
-			System.out.println(listaCategorias);
-			model.addAttribute("listaCategorias", listaCategorias);
-			model.addAttribute("mensajeError",mensaje);
-		
-		
-		return model;
-	}
+	
+	@Autowired
+	IntPreparaServ prepWeb;
 
 	 
 	/////////////////////////////////////// BLOQUE 1 --> LISTA  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -93,7 +63,7 @@ public class NoticiasGestionController {
 	 * 2. Si la lista no es nula, el mensaje es nulo, y el tamaño es 0 --> la conexión y todo es
 	 * correcto, sólo que no hay noticias activos
 	 * 
-	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a mandaListaCategorias, para que
+	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a prepWeb.envia, para que
 	 * nos traiga la lista de categorias en el model y luego poder usarla en el nav
 	 * 
 	 * 4. Agregamos al model el mensaje, la lista de noticias, el categoria de lista
@@ -120,7 +90,7 @@ public class NoticiasGestionController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveByDestacada("s").getListaNoticias();
 		String mensaje = noticiasDao.devuelveByDestacada("s").getMensaje();
 
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		if (listaNoticias != null) {
 			if (listaNoticias.size() == 0 && mensaje == null) {
@@ -155,7 +125,7 @@ public class NoticiasGestionController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveTodos().getListaNoticias();
 		String mensaje = noticiasDao.devuelveTodos().getMensaje();
 
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		if (listaNoticias != null) {
 			if (listaNoticias.size() == 0 && mensaje == null) {
@@ -180,7 +150,7 @@ public class NoticiasGestionController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveByDestacada("").getListaNoticias();
 		String mensaje = noticiasDao.devuelveByDestacada("").getMensaje();
 
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		if (listaNoticias != null) {
 			if (listaNoticias.size() == 0 && mensaje == null) {
@@ -232,7 +202,7 @@ public class NoticiasGestionController {
 		List<Noticia> listaNoticias = noticiasDao.devuelveByCategoria(idCategoria).getListaNoticias();
 		String mensaje = noticiasDao.devuelveByCategoria(idCategoria).getMensaje();
 
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 
 		String nombreCategoria = "";
 		Categoria categoria = null;
@@ -380,7 +350,7 @@ public class NoticiasGestionController {
 	 * 
 	 * 0. Entramos por GET, y tenemos de entrada el Model, y en el caso de editar, y el id por PathVariable
 	 * 
-	 * 1. Llamamos al método mandaListaCategorias
+	 * 1. Llamamos al método prepWeb.envia
 	 * 
 	 * 2. Almacenamos acción, y el destino que procesará el resultado del formulario
 	 * 
@@ -396,7 +366,7 @@ public class NoticiasGestionController {
 	public String goToNuevo(Model model, @PathVariable(name = "url") String origen) {
 
 		
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 		model.addAttribute("accion", "CREACIÓN");
 		model.addAttribute("destino", "/gestion/noticias/procesaCreate/"+origen);
 
@@ -417,7 +387,7 @@ public class NoticiasGestionController {
 				System.out.println(noticia.getCategoria());
 				Categoria categoria = noticia.getCategoria();
 				
-				model = mandaListaCategorias(model);
+				model = prepWeb.envia(model);
 
 				model.addAttribute("noticia", noticia);
 				model.addAttribute("categoria", categoria);
@@ -430,7 +400,7 @@ public class NoticiasGestionController {
 		}
 /*
 		if (noticiaOK) {
-			model = mandaListaCategorias(model);
+			model = prepWeb.envia(model);
 		}*/
 
 		model.addAttribute("mensaje", mensaje);

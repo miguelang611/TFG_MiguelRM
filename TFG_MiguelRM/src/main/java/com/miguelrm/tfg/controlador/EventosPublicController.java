@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import com.miguelrm.tfg.modelo.beans.Evento;
 import com.miguelrm.tfg.modelo.beans.Tipo;
 import com.miguelrm.tfg.modelo.dao.IntEventosDao;
 import com.miguelrm.tfg.modelo.dao.IntTiposDao;
+import com.miguelrm.tfg.servicios.IntPreparaServ;
 
 
 /* ================================================== CONTROLADOR DE EVENTOS ================================================== 
@@ -44,89 +46,9 @@ public class EventosPublicController {
 	@Autowired
 	IntTiposDao tiposDao;
 
-	/*
-	 * ============================= MÉTODO AUXILIAR MANDALISTATIPOS ============================= 
-	 * 
-	 * Tenemos un método auxiliar que llamaremos desde los métodos principales que se encarga
-	 * de devolver la lista con los tipos. 
-	 * 
-	 * Al ser el public controller, filtraremos los tipos por aquellos que tienen eventos activos,
-	 * el resto serán eliminados, aunque existan en la BD
-	 * 
-	 * =========================================================================================== 
-	 */
-
-	public Model mandaListaTipos(Model model) {
-		if(1==1) {
-			String mensaje = "";
-			List<Tipo> listaTipos = tiposDao.devuelveTipos("").getListaTipos();
-			String mensajeTipos = tiposDao.devuelveTipos("").getMensaje();
-
-			if (listaTipos != null) {
-				if (listaTipos.size() == 0 && mensajeTipos == null) {
-					mensajeTipos = "No se han encontrado tipos en la Base de Datos";
-				}
-			}
-
-			if (mensajeTipos != null) {
-				mensaje = "Error con los tipos de eventos: " + mensajeTipos;
-			}
-			System.out.println(listaTipos);
-			model.addAttribute("listaTiposFull", listaTipos);
-			model.addAttribute("mensajeError",mensaje);
-		}
-		
-		if(2==2) {
-			List<Tipo> listaTipos = tiposDao.devuelveTipos("activos").getListaTipos();
-			String mensajeTipos = tiposDao.devuelveTipos("activos").getMensaje();
-			List<Tipo> nuevaLista = listaTipos;
-			if (listaTipos != null) {
-				if (listaTipos.size() == 0 && mensajeTipos == null) {
-					mensajeTipos = "No se han encontrado tipos en la Base de Datos";
-				}else {
-					for(int i = 0; i < listaTipos.size(); i++) {
-						List<Evento> lista = listaLimpia(eventosDao.devuelveByTipo(i).getListaEventos());
-						if(lista == null || lista.size() == 0) {
-							
-						}else {
-							if(!nuevaLista.contains(listaTipos.get(i))){
-								nuevaLista.add(listaTipos.get(i));
-							}
-						}
-					}
-				}
-			}
-
-			
-			model.addAttribute("listaTipos", nuevaLista);
-		}
-		
-		
-		return model;
-	}
+	@Autowired
+	IntPreparaServ prepWeb;
 	
-	
-	public List<Evento> listaLimpia (List<Evento> miListaEventos){
-		List<Evento> miListaNueva = eventosDao.devuelveByPalabra("").getListaEventos();
-		try {
-			// Hemos definido este método en el TiposRepository,
-			// que interpreta a través de JPARepository
-			if(miListaEventos != null && miListaEventos.size() >= 0 ) {
-						for(int a=0; a<miListaEventos.size(); a++) {
-							if(miListaEventos.get(a).getEstado().equals("activo")) {
-								miListaNueva.add(miListaEventos.get(a));
-							}
-						}
-
-					
-				}
-		}catch(Exception e) {
-			
-		}
-		
-		return miListaNueva;
-		
-	}
 	 
 	/////////////////////////////////////// BLOQUE 1 --> LISTA  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
@@ -141,7 +63,7 @@ public class EventosPublicController {
 	 * 2. Si la lista no es nula, el mensaje es nulo, y el tamaño es 0 --> la conexión y todo es
 	 * correcto, sólo que no hay eventos activos
 	 * 
-	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a mandaListaTipos, para que
+	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a prepWeb.envia, para que
 	 * nos traiga la lista de tipos en el model y luego poder usarla en el nav
 	 * 
 	 * 4. Agregamos al model el mensaje, la lista de eventos, el tipo de lista
@@ -152,13 +74,13 @@ public class EventosPublicController {
 	 */
 
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public String verActivos(Model model) {
 
 		List<Evento> listaEventos = eventosDao.devuelveByEstado("activo").getListaEventos();
 		String mensaje = eventosDao.devuelveByEstado("activo").getMensaje();
 		
-		model = mandaListaTipos(model);
+		model = prepWeb.envia(model);
 
 		if (listaEventos != null) {
 			if (listaEventos.size() == 0 && mensaje == null) {
@@ -172,7 +94,7 @@ public class EventosPublicController {
 		model.addAttribute("tipo", "activos");
 		model.addAttribute("origen","/activos");
 
-		return "buyEventos";
+		return "eventos/buyEventos";
 
 	}
 	
@@ -191,7 +113,7 @@ public class EventosPublicController {
 		List<Evento> listaEventos = eventosDao.devuelveByDestacado("s").getListaEventos();
 		String mensaje = eventosDao.devuelveByDestacado("s").getMensaje();
 
-		model = mandaListaTipos(model);
+		model = prepWeb.envia(model);
 
 		if (listaEventos != null) {
 			if (listaEventos.size() == 0 && mensaje == null) {
@@ -206,7 +128,7 @@ public class EventosPublicController {
 		model.addAttribute("origen","/destacados");
 
 
-		return "buyEventos";
+		return "eventos/buyEventos";
 
 	}
 	
@@ -219,7 +141,7 @@ public class EventosPublicController {
 		if(palabra != null) {
 			List<Evento> listaEventos = eventosDao.devuelveByPalabra(palabra).getListaEventos();
 			mensaje = eventosDao.devuelveByPalabra(palabra).getMensaje();
-			nuevaLista = listaLimpia(listaEventos);
+			nuevaLista = prepWeb.listaLimpia(listaEventos);
 			if(nuevaLista == null || nuevaLista.size() == 0 ) {
 				mensaje = "No hay eventos que contengan la palabra "+palabra;
 			}
@@ -236,7 +158,7 @@ public class EventosPublicController {
 		model.addAttribute("tipo", tipo);
 		model.addAttribute("origen","/contiene/"+palabra);
 		
-		return "buyEventos";
+		return "eventos/buyEventos";
 	}
 	
 	/*
@@ -267,10 +189,10 @@ public class EventosPublicController {
 	public String verPorTipo(Model model, @PathVariable(name = "idTipo") int idTipo) {
 
 		List<Evento> listaEventos = eventosDao.devuelveByTipo(idTipo).getListaEventos();
-		List<Evento> nuevaLista = listaLimpia(listaEventos);
+		List<Evento> nuevaLista = prepWeb.listaLimpia(listaEventos);
 		String mensaje = eventosDao.devuelveByTipo(idTipo).getMensaje();		
 		
-		model = mandaListaTipos(model);
+		model = prepWeb.envia(model);
 
 		String nombreTipo = "";
 		Tipo tipo = null;
@@ -313,7 +235,7 @@ public class EventosPublicController {
 		model.addAttribute("mensajeError", mensaje);
 		model.addAttribute("origen","/tipo/{"+idTipo+"}");
 		
-		return "buyEventos";
+		return "eventos/buyEventos";
 		
 	}
 	
@@ -324,7 +246,7 @@ public class EventosPublicController {
 		String mensaje = eventosDao.devuelvePorId(idEvento).getMensaje();
 		System.out.println(listaEventos);
 		System.out.println(mensaje);
-		model = mandaListaTipos(model);
+		model = prepWeb.envia(model);
 		
 		List<Evento> listaDestacados = eventosDao.devuelveByDestacado("s").getListaEventos();
 		for(int i=listaDestacados.size() - 1; i > 1; i--) {
@@ -336,7 +258,7 @@ public class EventosPublicController {
 		
 		Evento miEvento = null;
 		if (mensaje == null) {
-			listaEventos = listaLimpia(listaEventos);
+			listaEventos = prepWeb.listaLimpia(listaEventos);
 			if(listaEventos.size() >0) {
 				miEvento = listaEventos.get(0);
 
@@ -352,7 +274,7 @@ public class EventosPublicController {
 		model.addAttribute("evento", miEvento);
 
 
-		return "detalleEvento";
+		return "eventos/detalleEvento";
 
 	}
 	

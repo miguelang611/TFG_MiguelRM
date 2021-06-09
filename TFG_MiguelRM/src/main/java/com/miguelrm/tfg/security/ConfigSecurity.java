@@ -46,6 +46,7 @@ protected void configure(HttpSecurity http) throws Exception {
 		// Las vistas pÃºblicas no requieren autenticaciÃ³n
 		.antMatchers("/",
 		"/login",
+		"/registro",
 		"/search",
 		"/eventos/**",
 		"/noticias/**",
@@ -58,8 +59,9 @@ protected void configure(HttpSecurity http) throws Exception {
 		.anyRequest().authenticated()
 		
 		// El formulario de Login no requiere autenticacion
-		.and().formLogin().permitAll();
-		
+		//.and().formLogin().permitAll();
+		.and().formLogin().loginPage("/login").permitAll()
+		.and().csrf().disable();
 	
 }
 

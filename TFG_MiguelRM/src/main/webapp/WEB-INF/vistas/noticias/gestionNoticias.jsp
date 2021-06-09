@@ -60,8 +60,12 @@
 				<th>Id</th>
 				<th>Nombre</th>
 				<th>Subtítulo</th>
-				
-				<th></th>
+				<c:if test="${!categoria.contains('de la categoría')}">
+				<th>Categoría</th>
+				</c:if>
+				<c:if test="${categoria == '(todas)' || categoria.contains('de la categoría')}">
+				<th>Destacada</th>
+				</c:if>
 				<th></th>
 				<th></th>
 				<th></th>
@@ -71,8 +75,9 @@
 						<td>${noticia.idNoticia}</td>
 						<td>${noticia.nombre}</td>
 						<td>${noticia.subtitulo}</td>
+						<td>${noticia.categoria.nombre}</td>
 						
-						<c:if test="${categoria == '(todos)' || categoria == 'activos' || categoria.contains('del categoria')}">
+						<c:if test="${categoria == '(todas)' || categoria.contains('de la categoría')}">
 							<c:if test="${noticia.destacada == 's'}">
 								<td>Sí</td>
 							</c:if>

@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.miguelrm.tfg.modelo.beans.Noticia;
 import com.miguelrm.tfg.modelo.beans.Categoria;
 import com.miguelrm.tfg.modelo.dao.IntNoticiasDao;
+import com.miguelrm.tfg.servicios.IntPreparaServ;
+import com.miguelrm.tfg.servicios.PreparaServImpl;
 import com.miguelrm.tfg.modelo.dao.IntCategoriasDao;
 
 /* ================================================== CONTROLADOR DE TIPOS ================================================== 
@@ -38,38 +40,18 @@ public class CategoriasController {
 	
 	@Autowired
 	IntNoticiasDao noticiasDao;
-
-
-	public Model mandaListaCategorias(Model model) {
-		
-		String mensaje = "";
-		List<Categoria> listaCategorias = categoriasDao.devuelveCategorias("").getListaCategorias();
-		String mensajeCategorias = categoriasDao.devuelveCategorias("").getMensaje();
-
-		if (listaCategorias != null) {
-			if (listaCategorias.size() == 0 && mensajeCategorias == null) {
-				mensajeCategorias = "No se han encontrado categorias en la Base de Datos";
-			}
-		}
-
-		if (mensajeCategorias != null) {
-			mensaje = "Error con los categorias de noticias: " + mensajeCategorias;
-		}
-		System.out.println(listaCategorias);
-		model.addAttribute("listaCategorias", listaCategorias);
-		model.addAttribute("mensajeError",mensaje);
 	
-	
-	return model;
-}
-	
-	//Simplemente ejecutar el método mandaListaCategorias
+	@Autowired
+	IntPreparaServ prepWeb;
+
+
+	//Simplemente ejecutar el método prepWeb.envia
 	@GetMapping("")
 	public String verTodos(Model model) {
 
-		model = mandaListaCategorias(model);
+		model = prepWeb.envia(model);
 		
-		return "gestionCategorias";
+		return "noticias/gestionCategorias";
 		 
 	}
 	
@@ -147,7 +129,7 @@ public class CategoriasController {
 
 		model.addAttribute("mensaje", mensaje);
 
-		return "formCategoria";	 
+		return "noticias/formCategoria";	 
 		 
 	}
 	

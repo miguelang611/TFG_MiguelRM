@@ -79,6 +79,7 @@ SUBTITULO VARCHAR(50),
 DETALLE VARCHAR(200),
 DESTACADA CHAR(1),
 FECHA DATE,
+IMG VARCHAR(100),
 FOREIGN KEY(EMAIL) REFERENCES USUARIOS(EMAIL),
 FOREIGN KEY(ID_CATEGORIA) REFERENCES CATEGORIAS(ID_CATEGORIA)
 );
@@ -89,10 +90,10 @@ INSERT INTO `TFG_MiguelRM`.`tipos` (`ID_TIPO`, `NOMBRE`, `DESCRIPCION`) VALUES (
 INSERT INTO `TFG_MiguelRM`.`tipos` (`ID_TIPO`, `NOMBRE`, `DESCRIPCION`) VALUES ('3', 'Moda', 'Eventos relacionados con pasarelas, productos de cuidado personal');
 INSERT INTO `TFG_MiguelRM`.`tipos` (`ID_TIPO`, `NOMBRE`, `DESCRIPCION`) VALUES ('4', 'Deporte', 'Eventos relacionados con el mundo del deporte: fútbol, baloncesto, voleibol, etc');
 
-INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `IMG`, `DESCRIPCION`,  `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('1', 'ReproBeasts VIII', '/resources/media/eventos/1.jpg', noticias'8º Edición de la competición de Drag Races de los 50 coches más potenciados de España', '2021-05-20', '12', 'Calle A - Madrid', 'activo', 's', '300', '50', '100', '1');
-INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `DESCRIPCION`, `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('2', 'Lola Índigo', 'Concierto de Lola Índigo con su último éxito', '2021-06-25', '4', 'Zaragoza', 'activo', 's', '3000', '500', '60', '2');
-INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `DESCRIPCION`, `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('3', 'Fashion Barcelona', 'Desfile Moda Temporada 2021 Ed.Verano', '2021-07-01', '3', 'Barcelona', 'cancelado', '', '100', '50', '300', '3');
-INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `DESCRIPCION`, `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('4', 'Final Champions', 'Real Madrid vs PSG', '2021-05-29', '2', 'Estambul', 'activo', '', '10000', '1000', '1000', '4');
+INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `IMG`, `DESCRIPCION`,  `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('1', 'ReproBeasts VIII', '/resources/media/eventos/1.jpg', '8º Edición de la competición de Drag Races de los 50 coches más potenciados de España', '2021-05-20', '12', 'Calle A - Madrid', 'activo', 's', '300', '50', '100', '1');
+INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `IMG`, `DESCRIPCION`,  `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('2', 'Lola Índigo', '/resources/media/eventos/2.jpg', 'Concierto de Lola Índigo con su último éxito', '2021-06-25', '4', 'Zaragoza', 'activo', 's', '3000', '500', '60', '2');
+INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `IMG`, `DESCRIPCION`,  `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('3', 'Fashion Barcelona', '/resources/media/eventos/3.jpg', 'Desfile Moda Temporada 2021 Ed.Verano', '2021-07-01', '3', 'Barcelona', 'cancelado', '', '100', '50', '300', '3');
+INSERT INTO `TFG_MiguelRM`.`eventos` (`ID_EVENTO`, `NOMBRE`, `IMG`, `DESCRIPCION`,  `FECHA_INICIO`, `DURACION`, `DIRECCION`, `ESTADO`, `DESTACADO`, `AFORO_MAXIMO`, `MINIMO_ASISTENCIA`, `PRECIO`, `ID_TIPO`) VALUES ('4', 'Final Champions', '/resources/media/eventos/4.jpg', 'Real Madrid vs PSG', '2021-05-29', '2', 'Estambul', 'activo', '', '10000', '1000', '1000', '4');
 
 INSERT INTO `TFG_MiguelRM`.`perfiles` (`ID_PERFIL`, `NOMBRE`) VALUES ('1', 'admin');
 INSERT INTO `TFG_MiguelRM`.`perfiles` (`ID_PERFIL`, `NOMBRE`) VALUES ('2', 'organizador');
@@ -111,15 +112,15 @@ INSERT INTO `tfg_miguelrm`.`usuario_perfiles` (`EMAIL`, `ID_PERFIL`) VALUES ('re
 INSERT INTO `tfg_miguelrm`.`usuarios` (`EMAIL`, `PASSWORD`, `NOMBRE`) VALUES ('usuario@usuario.com', '{noop}usuario', 'usuario');
 INSERT INTO `tfg_miguelrm`.`usuario_perfiles` (`EMAIL`, `ID_PERFIL`) VALUES ('usuario@usuario.com', '4');
 
-INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('1', 'general', 'Categoría general');
-INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('2', 'eventosnuevos', 'Lanzamientos de nuevos eventos nuevos');
-INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('3', 'vehiculosnuevos', 'Lanzamientos de nuevos modelos de vehículos nuevos');
-INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('4', 'pruebas', 'Pruebas de coches');
-INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('5', 'consejos', 'Consejos para tu coche');
+INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('1', 'General', 'Categoría general');
+INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('2', 'Próximos Eventos', 'Lanzamientos de nuevos eventos nuevos');
+INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('3', 'Vehículos Nuevos', 'Lanzamientos de nuevos modelos de vehículos nuevos');
+INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('4', 'Pruebas', 'Pruebas de coches');
+INSERT INTO `tfg_miguelrm`.`categorias` (`ID_CATEGORIA`, `NOMBRE`, `DESCRIPCION`) VALUES ('5', 'Consejos', 'Consejos para tu coche');
 
 
-INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`) VALUES ('1', 'admin@admin.com', 'Buenvenida', 'Bienvenida', 'Bienvenida', 's', '2021-05-12');
-INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`) VALUES ('2', 'organizador@organizador.com', 'Evento Reprobeast', 'Increíble', 'El día sabe dios cuando se produriá el evento Reprobeast', '', '2021-05-20');
-INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`) VALUES ('3', 'redactor@redactor.com', 'BMW M5 2022', 'La nueva bestia bávara', 'Se ha presentado la nueva revisión del sedán bávaro más brutal: el nuevo BMW M5 2022', 's', '2021-05-23');
-INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`) VALUES ('4', 'redactor@redactor.com', 'Probamos el nuevo Mercedes-Benz Clase E', 'Confort y elegancia al compás de la velocidad', 'Hoy probamos el nuevo Mercedes-Benz Clase E, la berlina de referencia de la firma de la estrella', 's', '2021-05-26');
-INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`) VALUES ('5', 'redactor@redactor.com', '¿Cómo lavar tu coche...', 'Sin dejar marcas?', 'Es importante que blabla', '', '2021-06-03');
+INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`, `IMG`) VALUES ('1', 'admin@admin.com', 'Buenvenida', 'Bienvenida', 'Bienvenida', 's', '2021-05-12', '/resources/media/noticias/1.jpg');
+INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`, `IMG`) VALUES ('2', 'organizador@organizador.com', 'Evento Reprobeast', 'Increíble', 'El día sabe dios cuando se produriá el evento Reprobeast', '', '2021-05-20', '/resources/media/noticias/2.jpg');
+INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`, `IMG`) VALUES ('3', 'redactor@redactor.com', 'BMW M5 2022', 'La nueva bestia bávara', 'Se ha presentado la nueva revisión del sedán bávaro más brutal: el nuevo BMW M5 2022', 's', '2021-05-23', '/resources/media/noticias/3.jpg');
+INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`, `IMG`) VALUES ('4', 'redactor@redactor.com', 'Probamos el nuevo Mercedes-Benz Clase E', 'Confort y elegancia al compás de la velocidad', 'Hoy probamos el nuevo Mercedes-Benz Clase E, la berlina de referencia de la firma de la estrella', 's', '2021-05-26', '/resources/media/noticias/4.jpg');
+INSERT INTO `tfg_miguelrm`.`noticias` (`ID_CATEGORIA`, `EMAIL`, `NOMBRE`, `SUBTITULO`, `DETALLE`, `DESTACADA`, `FECHA`, `IMG`) VALUES ('5', 'redactor@redactor.com', '¿Cómo lavar tu coche...', 'Sin dejar marcas?', 'Es importante que blabla', '', '2021-06-03', '/resources/media/noticias/5.jpg');

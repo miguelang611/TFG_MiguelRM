@@ -30,7 +30,7 @@
 			</c:if>
 			<c:if test="${noticia != null}">
 
-				<h1 class="post-title wow fadeInUp">Noticia ${noticia.nombre}</h1>
+				<h1 class="post-title wow fadeInUp">${noticia.nombre}</h1>
 
 				<div class="row">
 					<div class="col-md-8 blog-post-wrapper">
@@ -39,44 +39,21 @@
 								class="post-featured-image">
 						</div>
 						<div class="post-content wow fadeInUp">
+						
 							<c:if test="${noticia.destacada == 's'}">
 								<blockquote class="blockquote wow fadeInUp">
-									<h4>¡EVENTO DESTACADO!</h4>
-									<h5>¡Alto número de reservas en las pasadas 24 horas!</h5>
+									<h4 style="margin-bottom: 0px;">${noticia.subtitulo}</h4>
 								</blockquote>
 							</c:if>
-							<h4>${noticia.descripcion}</h4>
-							<p>Localización: ${noticia.direccion}</p>
-							<p class="post-date">Fecha: ${noticia.fechaInicio}</p>
 
-							<p>Duración: ${noticia.duracion} horas</p>
+							<p class="post-date">Fecha: ${noticia.fecha}</p>
 
-							<p>Aforo máximo: ${noticia.aforoMaximo } personas</p>
-
-							<p>
-								Precio:
-								<del>${noticia.precio +20}€</del>
-								${noticia.precio}€
-							</p>
-
-							<div class="shop-page" style="padding-bottom: 0px">
-
-								<article class="product-card wow fadeInUp">
-
-
-									<form class="btn-wrapper">
-										<button class="btn btn-add-to-cart" type="submit" disabled
-											formaction="/noticias/comprar/${noticia.idNoticia}${origen}">
-											Comprar</button>
-									</form>
-								</article>
-
-							</div>
-
+							<h5>${noticia.detalle }</h5>
+							<br/>
 							<div class="post-navigation wow fadeInUp">
 								<a class="btn prev-post" href="/noticias/">Volver</a>
 							</div>
-
+<br/>
 						</div>
 
 					</div>
@@ -116,10 +93,10 @@
 										varStatus="varEstado">
 										<li><a href="/noticias/categoria/${miCategoria.idCategoria}">${miCategoria.nombre}</a></li>
 									</c:forEach>
-
 								</ul>
 							</div>
 						</div>
+
 					</aside>
 				</div>
 			</c:if>
@@ -130,5 +107,4 @@
 	<%@ include file="../common/footer.jsp"%>
 
 </body>
-
 </html>
