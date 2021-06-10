@@ -106,7 +106,7 @@ public class HomeController implements ErrorController {
 
 		model = prepWeb.envia(model);
 
-		return "home/index";
+		return "redirect:/eventos/destacados";
 
 	}
 

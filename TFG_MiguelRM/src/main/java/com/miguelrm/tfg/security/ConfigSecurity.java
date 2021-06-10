@@ -47,6 +47,8 @@ public void configure(HttpSecurity http) throws Exception {
 		// Las vistas pÃºblicas no requieren autenticaciÃ³n
 		.antMatchers("/",
 		"/login",
+		"/eventosREST/**",
+		"/tiposREST/**",
 		"/registro",
 		"/search",
 		"/eventos/**",
