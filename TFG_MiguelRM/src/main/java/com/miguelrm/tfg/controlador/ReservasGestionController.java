@@ -2,6 +2,8 @@ package com.miguelrm.tfg.controlador;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miguelrm.tfg.modelo.beans.Reserva;
+import com.miguelrm.tfg.modelo.beans.Usuario;
 import com.miguelrm.tfg.modelo.dao.IntEventosDao;
 import com.miguelrm.tfg.modelo.dao.IntReservasDao;
 import com.miguelrm.tfg.servicios.IntPreparaServ;
@@ -72,7 +75,7 @@ public class ReservasGestionController {
 		
 		model.addAttribute("miListaReservas", listaReservas);
 		model.addAttribute("tipo", "Todas las reservas");
-		model.addAttribute("origen","/todas");
+		model.addAttribute("origen","/gestion/reservas/");
 
 		return"/reservas/gestionReservas";
 	}
@@ -99,7 +102,7 @@ public class ReservasGestionController {
 		
 		model.addAttribute("miListaReservas", listaReservas);
 		model.addAttribute("tipo", tipo);
-		model.addAttribute("origen","/evento/"+idEvento);
+		model.addAttribute("origen","/gestion/reservas/");
 
 		return"/reservas/gestionReservas";
 	}
@@ -130,11 +133,12 @@ public class ReservasGestionController {
 	}
 	
 	
-	@GetMapping("/eliminar/{id}/{url}")
+	@GetMapping("/eliminar/{id}")
 	public String eliminar(RedirectAttributes miRedirAttrib, @PathVariable(name = "id") int idReserva, @PathVariable(name = "url") String destino) {
 		String mensaje = "";
+		boolean isAdmin = true;
 		try {
-			mensaje = reservasDao.borrarReserva(idReserva);
+			mensaje = reservasDao.borrarReserva(idReserva, isAdmin, null);
 		} catch (Exception e) {
 			mensaje = "Fallo desconocido al eliminar la reserva";
 			e.printStackTrace();
@@ -142,8 +146,70 @@ public class ReservasGestionController {
 
 		miRedirAttrib.addFlashAttribute("mensaje", mensaje);
 
-		return "redirect:/cliente/reservas/"+destino;
+		return "redirect:/gestion/reservas/todas";
 
+
+	}
+	
+	@GetMapping("/add/{id}")
+	public String editarAdd(Model model, @PathVariable(name = "id") int idreserva,  HttpSession miSesion, RedirectAttributes miRedirAtrib) {
+
+		List<Reserva> listaReservas = reservasDao.devuelvePorId(idreserva).getListaReservas();
+		String mensaje = reservasDao.devuelvePorId(idreserva).getMensaje();
+		boolean isAdmin = true;
+		Usuario usuario = (Usuario) miSesion.getAttribute("usuario");
+		Reserva reserva = null;
+		if (listaReservas != null) {
+			if (listaReservas.size() == 1 && mensaje == null) {
+				 reserva = listaReservas.get(0);
+				 int cantidad = reserva.getCantidad();
+				 System.out.println("CANTIDAD: "+cantidad);
+				 cantidad++;
+				 System.out.println("CANTIDAD NUEVA: "+cantidad);
+				 reserva.setCantidad(cantidad);
+				 mensaje = reservasDao.editarReserva(reserva, isAdmin, usuario);
+				 System.out.println("CANTIDAD SUPERNUEVA: "+reserva.getCantidad());
+								
+			}
+		}
+
+
+		miRedirAtrib.addFlashAttribute("mensaje", mensaje);
+
+		System.out.println(reserva);
+
+		return "redirect:/gestion/reservas/todas";
+
+	}
+	
+	@GetMapping("/minus/{id}")
+	public String editarMinus(Model model, @PathVariable(name = "id") int idreserva,  HttpSession miSesion, RedirectAttributes miRedirAtrib) {
+
+		List<Reserva> listaReservas = reservasDao.devuelvePorId(idreserva).getListaReservas();
+		String mensaje = reservasDao.devuelvePorId(idreserva).getMensaje();
+		boolean isAdmin = true;
+		Usuario usuario = (Usuario) miSesion.getAttribute("usuario");
+		Reserva reserva = null;
+		if (listaReservas != null) {
+			if (listaReservas.size() == 1 && mensaje == null) {
+				 reserva = listaReservas.get(0);
+				 int cantidad = reserva.getCantidad()-1;
+				 if(cantidad > 0) {
+					 reserva.setCantidad(cantidad);
+					 mensaje = reservasDao.editarReserva(reserva, isAdmin, usuario);
+				 }else {
+					 mensaje = "Error --> No puede dejar una reserva con 0 entradas, si lo desea puede cancelarla";
+				 }
+								
+			}
+		}
+
+
+		miRedirAtrib.addFlashAttribute("mensaje", mensaje);
+
+		System.out.println(reserva);
+
+		return "redirect:/gestion/reservas/todas";
 
 	}
 

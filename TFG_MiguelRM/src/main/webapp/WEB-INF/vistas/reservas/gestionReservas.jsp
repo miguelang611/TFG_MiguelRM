@@ -88,17 +88,19 @@
 						<td>${reserva.usuario.email}</td>
 						</c:if>
 						
-						<td>${reserva.cantidad}</td>
+						<td>${reserva.cantidad}
+						<a href="${origen}add/${reserva.idReserva}">+</a>
+						/
+						<a href="${origen}minus/${reserva.idReserva}">-</a></td>
 
 						
 
 
 						<td><a href="/eventos/detalle/${reserva.evento.idEvento}"
 							class="btn btn-info btn-sm">Detalle Evento</a></td>
-
-						<td><a href="/cliente/reservas/eliminar/${reserva.idReserva}${origen}"
+						
+						<td><a href="${origen}eliminar/${reserva.idReserva}"
 							class="btn btn-danger btn-sm">Cancelar</a></td>
-
 					</tr>
 				</c:forEach>
 			</table>
@@ -107,7 +109,7 @@
 <br/>
 					<div class="col-md-8 blog-post-wrapper">
 						<div class="post-navigation wow fadeInUp">
-							<a class="btn prev-post" href="/gestion/reservas/todos">Volver</a>
+							<a class="btn prev-post" href="${origen}todas">Volver</a>
 						</div>
 					</div>
 	

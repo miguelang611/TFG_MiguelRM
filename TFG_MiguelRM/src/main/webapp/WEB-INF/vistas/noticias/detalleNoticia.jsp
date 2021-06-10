@@ -46,7 +46,8 @@
 								</blockquote>
 							</c:if>
 
-							<p class="post-date">Fecha: ${noticia.fecha}</p>
+							<p class="post-date">Fecha: ${noticia.fecha} | by ${noticia.usuario.nombre }</p>
+						
 
 							<h5>${noticia.detalle }</h5>
 							<br/>

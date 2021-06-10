@@ -38,10 +38,11 @@ public void configure(HttpSecurity http) throws Exception {
 		.authorizeRequests().antMatchers("/bootstrap/**",  "/images/**",  "/tinymce/**",  "/logos/**").permitAll()
 		
 		// Asignar permisos a URLs por ROLES
-		.antMatchers("/tipos/**").hasAnyAuthority("redactor","admin")
+		.antMatchers("/tipos/**").hasAnyAuthority("organizador","admin")
 		.antMatchers("/gestion/eventos/**").hasAnyAuthority("organizador","admin")
 		.antMatchers("/gestion/noticias/**").hasAnyAuthority("redactor","admin")
-		.antMatchers("/app/perfiles/**").hasAnyAuthority("ADMINISTRADOR")
+		.antMatchers("/categorias/**").hasAnyAuthority("redactor","admin")
+		
 		
 		// Las vistas pÃºblicas no requieren autenticaciÃ³n
 		.antMatchers("/",
@@ -53,6 +54,9 @@ public void configure(HttpSecurity http) throws Exception {
 		"/doLogin",
 		"/resources/**"
 		).permitAll()
+		
+		// Todas las demÃ¡s URLs de la AplicaciÃ³n requieren autenticaciÃ³n
+		.anyRequest().authenticated()
 		
 		.and().formLogin().loginPage("/login")
 			.defaultSuccessUrl("/doLogin",true)

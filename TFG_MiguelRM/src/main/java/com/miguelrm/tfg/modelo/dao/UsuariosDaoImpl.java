@@ -257,7 +257,7 @@ public class UsuariosDaoImpl implements IntUsuariosDao {
 				//a la función de borrarReserva del ReservasDaoImpl
 					try {
 						for(int i=0; i<miListaReservas.size(); i++) {
-							reservasDao.borrarReserva(miListaReservas.get(i).getIdReserva());
+							reservasDao.borrarReserva(miListaReservas.get(i).getIdReserva(),true,null);
 						}
 						//Si no ha fallado, estamos listos para eliminar el usuario
 						readyDeleteUsuario = true;

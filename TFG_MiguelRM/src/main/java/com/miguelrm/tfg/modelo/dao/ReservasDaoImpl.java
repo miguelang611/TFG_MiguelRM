@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.miguelrm.tfg.modelo.beans.Reserva;
+import com.miguelrm.tfg.modelo.beans.Usuario;
 import com.miguelrm.tfg.modelo.beans.ListaReservasMensaje;
 import com.miguelrm.tfg.modelo.beans.Evento;
 import com.miguelrm.tfg.modelo.repository.ReservasRepository;
@@ -108,7 +109,7 @@ public class ReservasDaoImpl implements IntReservasDao {
 	 * 
 	 */
 	@Override
-	public String borrarReserva(int idReserva) {
+	public String borrarReserva(int idReserva, boolean isAdmin, Usuario usuario) {
 
 		String mensaje = "Error desconocido";
 
@@ -133,8 +134,13 @@ public class ReservasDaoImpl implements IntReservasDao {
 
 		if (reservaExiste) {
 			try {
-				miReservasRepo.deleteById(idReserva);
-				mensaje = "La reserva de " + miReservaIntermedio.getEvento().getNombre() + " se ha eliminado correctamente";
+				if(isAdmin || miReservaIntermedio.getUsuario().equals(usuario)) {
+					miReservasRepo.deleteById(idReserva);
+					mensaje = "La reserva de " + miReservaIntermedio.getEvento().getNombre() + " se ha eliminado correctamente";
+				}else {
+					mensaje = "No puede eliminar una reserva que no le pertenece";
+				}
+
 			} catch (Exception e) {
 				mensaje = "Error -> Se ha encontrado el reserva, pero ha habido un error al salvar la eliminación del reserva"
 						+ idReserva + " en la BBDD";
@@ -219,7 +225,7 @@ public class ReservasDaoImpl implements IntReservasDao {
 			// a la función de borrarReserva del ReservasDaoImpl
 			try {
 				for (int i = 0; i < miListaReservas.size(); i++) {
-					borrarReserva(miListaReservas.get(i).getIdReserva());
+					borrarReserva(miListaReservas.get(i).getIdReserva(),true,null);
 				}
 				mensaje = "Se han borrado todos las reservas del evento " + miEventoIntermedio.getNombre()
 						+ " correctamente";
@@ -356,9 +362,10 @@ public class ReservasDaoImpl implements IntReservasDao {
 	 * 
 	 */
 	@Override
-	public String editarReserva(Reserva miReserva) {
+	public String editarReserva(Reserva miReserva, boolean isAdmin, Usuario usuario) {
 
 		String editarRdo = "Error desconocido";
+		String rdo2 = "";
 
 		Reserva miReservaIntermedio = null;
 
@@ -391,16 +398,84 @@ public class ReservasDaoImpl implements IntReservasDao {
 			}
 		}
 
+		boolean permisosOK = false;
 		if (reservaExiste) {
+				if(isAdmin || miReservaIntermedio.getUsuario().equals(usuario)) {
+					if(miReserva.getCantidad() >10) {
+						editarRdo = "No puede tener más de 10 reservas de un evento";
+					}else {
+						permisosOK = true;
+
+					}
+					
+				}else {
+					editarRdo = "No puede modificar una reserva que no le pertenece";
+				}
+
+		}
+		
+		boolean allOK = false;
+		if(permisosOK) {
+
+					
+				System.out.println("TEST");
+				List<Reserva> listaResEvento = devuelveByEvento(miReserva.getEvento().getIdEvento()).getListaReservas();
+				
+				if (listaResEvento != null) {
+
+					int cantidadRes = 0;
+					if(listaResEvento.size() > 0) {
+						for(int i = 0; i < listaResEvento.size(); i++) {
+							
+							if(!listaResEvento.get(i).equals(miReserva)) {
+								cantidadRes += listaResEvento.get(i).getCantidad();
+							}
+								
+						}
+						
+					}
+
+					int totalInicial = cantidadRes;
+					int aforoMaximo = miReserva.getEvento().getAforoMaximo() - miReserva.getCantidad();
+					if(totalInicial > aforoMaximo) {
+						
+
+						
+						int cantidadSiReservable = aforoMaximo - cantidadRes;
+						if(cantidadSiReservable > 0) {
+							miReserva.setCantidad(cantidadSiReservable);
+							allOK = true;
+							rdo2 = "\n\rNOTA: Sólo quedaban "+cantidadSiReservable+" plazas disponibles, de modo que su reserva se ha reducido a dicha cantidad";
+							
+						}else {
+
+							editarRdo = "Error --> No se puede realizar la reserva al superarse el aforo máximo";
+						}
+						
+					}else {
+						allOK = true;
+					}
+				}else {
+					allOK = true;
+				}
+				
+			
+		}
+		
+		if(allOK) {
 			try {
-				miReservaIntermedio = miReserva;
-				miReservasRepo.save(miReservaIntermedio);
-				editarRdo = "La reserva de " + miReservaIntermedio.getEvento().getNombre()+ " con id "
-						+ miReservaIntermedio.getIdReserva() + " se ha editado correctamente";
+				
+					miReservaIntermedio = miReserva;
+					miReservasRepo.save(miReservaIntermedio);
+					editarRdo = "La reserva de " + miReservaIntermedio.getEvento().getNombre()+ " con id "
+							+ miReservaIntermedio.getIdReserva() + " se ha editado correctamente";
+					editarRdo+=rdo2;
+
 			} catch (Exception e) {
 				editarRdo = "Se ha encontrado el reserva, pero ha habido un error al salvar la eliminación del reserva "
 						+ codigoReserva + " en la BBDD";
 			}
+			
 		}
 
 		return editarRdo;

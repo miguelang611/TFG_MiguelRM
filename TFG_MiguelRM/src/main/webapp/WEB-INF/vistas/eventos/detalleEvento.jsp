@@ -75,7 +75,7 @@
 										</sec:authorize>
 										<sec:authorize access="isAnonymous()">
 																				<button class="btn btn-add-to-cart" type="submit"
-											formaction="/cliente/reservas/doDirecto">
+											formaction="/cliente/reservas/doDirecto/${evento.idEvento}">
 											Comprar</button>
 										</sec:authorize>
 										

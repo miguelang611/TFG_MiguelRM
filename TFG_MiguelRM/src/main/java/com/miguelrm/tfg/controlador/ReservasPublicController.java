@@ -73,7 +73,7 @@ public class ReservasPublicController {
 				Date fecha = new Date();
 				for(int i=0; i<listaReservas.size(); i++) {
 					
-					if(fecha.compareTo(listaReservas.get(i).getEvento().getFechaInicio()) > 0)   {
+					if(fecha.compareTo(listaReservas.get(i).getEvento().getFechaInicio()) < 0)   {
 						listaLimpia.add(listaReservas.get(i));
 					}
 					
@@ -90,7 +90,7 @@ public class ReservasPublicController {
 		
 		model.addAttribute("miListaReservas", listaLimpia);
 		model.addAttribute("tipo", "Mis Reservas");
-		model.addAttribute("origen","/todas");
+		model.addAttribute("origen","/cliente/reservas/");
 
 		return"/reservas/gestionReservas";
 	}
@@ -137,11 +137,14 @@ public class ReservasPublicController {
 		return"redirect:/cliente/reservas/todas";
 	}
 	
-	@GetMapping("/eliminar/{id}/{url}")
-	public String eliminar(RedirectAttributes miRedirAttrib, @PathVariable(name = "id") int idReserva, @PathVariable(name = "url") String destino) {
+	@GetMapping("/eliminar/{id}")
+	public String eliminar(RedirectAttributes miRedirAttrib, @PathVariable(name = "id") int idReserva, HttpSession miSesion) {
 		String mensaje = "";
+		boolean isAdmin = false;
+		Usuario usuario = (Usuario) miSesion.getAttribute("usuario");
+
 		try {
-			mensaje = reservasDao.borrarReserva(idReserva);
+			mensaje = reservasDao.borrarReserva(idReserva, isAdmin, usuario);
 		} catch (Exception e) {
 			mensaje = "Fallo desconocido al eliminar la reserva";
 			e.printStackTrace();
@@ -149,104 +152,77 @@ public class ReservasPublicController {
 
 		miRedirAttrib.addFlashAttribute("mensaje", mensaje);
 
-		return "redirect:/cliente/reservas/"+destino;
+		return "redirect:/cliente/reservas/todas";
 
 
 	}
 	
 
 	
-		
-	
-	@GetMapping("/editar/{id}/{url}")
-	public String editar(Model model, @PathVariable(name = "id") int idreserva, @PathVariable(name = "url") String origen) {
+	@GetMapping("/add/{id}")
+	public String editarAdd(Model model, @PathVariable(name = "id") int idreserva,  HttpSession miSesion, RedirectAttributes miRedirAtrib) {
 
 		List<Reserva> listaReservas = reservasDao.devuelvePorId(idreserva).getListaReservas();
 		String mensaje = reservasDao.devuelvePorId(idreserva).getMensaje();
+		boolean isAdmin = false;
+		Usuario usuario = (Usuario) miSesion.getAttribute("usuario");
 		Reserva reserva = null;
 		if (listaReservas != null) {
 			if (listaReservas.size() == 1 && mensaje == null) {
 				 reserva = listaReservas.get(0);
-				System.out.println(reserva.getEvento());
-				Evento evento = reserva.getEvento();
-				
-				model = prepWeb.envia(model);
-
-				model.addAttribute("reserva", reserva);
-				model.addAttribute("evento", evento);
-				model.addAttribute("accion", "EDICIÓN");
-				model.addAttribute("destino", "/cliente/reservas/procesaEditar/"+origen);
-				
-				
+				 int cantidad = reserva.getCantidad();
+				 System.out.println("CANTIDAD: "+cantidad);
+				 cantidad++;
+				 System.out.println("CANTIDAD NUEVA: "+cantidad);
+				 reserva.setCantidad(cantidad);
+				 mensaje = reservasDao.editarReserva(reserva, isAdmin, usuario);
+				 System.out.println("CANTIDAD SUPERNUEVA: "+reserva.getCantidad());
+								
 			}
 		}
 
 
-		model.addAttribute("mensaje", mensaje);
+		miRedirAtrib.addFlashAttribute("mensaje", mensaje);
 
-		return "reservas/formReserva";
+		System.out.println(reserva);
+
+		return "redirect:/cliente/reservas/todas";
 
 	}
 	
-	
-	/*
-	 * ================================ MÉTODOS PROCESANUEVO/PROCESAEDITAR ================================= 
-	 * 
-	 * 0. Entramos por GET, y tenemos de entrada el Model, y el objeto reserva
-	 * 
-	 * (Si es nuevo, lo ponemos activo forzosamente)
-	 * 
-	 * 2. Invocamos a insertarreserva/editarreserva del reservasDao, guardando el mensaje
-	 * 
-	 * 3. Almacenamos en el model el mensaje y la futura url de destino
-	 * 
-	 * 4. Hacemos forward a reservas (activos, destacadas, por X evento)
-	 * 
-	 * ================================================================================================= 
-	 */
-	
-	@GetMapping("/procesaCreate/{url}")
-	public String procesarFormulario(RedirectAttributes miRedirAttrib, @PathVariable(name = "url") String destino, Reserva reserva) {
+	@GetMapping("/minus/{id}")
+	public String editarMinus(Model model, @PathVariable(name = "id") int idreserva,  HttpSession miSesion, RedirectAttributes miRedirAtrib) {
+
+		List<Reserva> listaReservas = reservasDao.devuelvePorId(idreserva).getListaReservas();
+		String mensaje = reservasDao.devuelvePorId(idreserva).getMensaje();
+		boolean isAdmin = false;
+		Usuario usuario = (Usuario) miSesion.getAttribute("usuario");
+		Reserva reserva = null;
+		if (listaReservas != null) {
+			if (listaReservas.size() == 1 && mensaje == null) {
+				 reserva = listaReservas.get(0);
+				 int cantidad = reserva.getCantidad()-1;
+				 if(cantidad > 0) {
+					 reserva.setCantidad(cantidad);
+					 mensaje = reservasDao.editarReserva(reserva, isAdmin, usuario);
+				 }else {
+					 mensaje = "No puede dejar una reserva con 0 entradas, si lo desea puede cancelarla";
+				 }
+
+								
+			}
+		}
+
+
+		miRedirAtrib.addFlashAttribute("mensaje", mensaje);
 
 		System.out.println(reserva);
 
-		
-		String mensaje = reservasDao.insertarReserva(reserva);
-
-		System.out.println(reserva);
-		
-		System.out.println(mensaje);
-
-		/////////////////////////////// IMPORTANTE \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-		miRedirAttrib.addFlashAttribute("mensaje", mensaje);
-		miRedirAttrib.addFlashAttribute("urlDestino", "/cliente/reservas/"+destino);
-
-		return "redirect:/cliente/reservas/"+destino;
+		return "redirect:/cliente/reservas/todas";
 
 	}
 	
 
-	@GetMapping("/procesaEditar/{url}")
-	public String procesarEditarreserva(RedirectAttributes miRedirAttrib,  @PathVariable(name = "url") String destino, Reserva reserva) {
-		
-		String mensaje = null;
-
-		System.out.println(reserva);
-
-		mensaje = reservasDao.editarReserva(reserva);
-
-		System.out.println(reserva);
-
-		System.out.println(mensaje);
-
-		miRedirAttrib.addFlashAttribute("mensaje", mensaje);
-		miRedirAttrib.addFlashAttribute("urlDestino", "/cliente/reservas/"+destino);
-
-		System.out.println(reserva);
-
-		return "redirect:/cliente/reservas/"+destino;
-
-	}
 
 
 }
