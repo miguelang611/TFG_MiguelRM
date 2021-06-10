@@ -125,18 +125,6 @@ public class HomeController implements ErrorController {
 	@PostMapping("/login")
 	public String toLogin(Model model, String error, String logout, Authentication miAut, HttpSession miSesion) {
 
-		/*
-		 * if (miAut != null) { Usuario miUsuario =
-		 * usuDao.devuelvePorEmail(miAut.getName()).getListaUsuarios().get(0);
-		 * 
-		 * for (GrantedAuthority ele : miAut.getAuthorities())
-		 * System.out.println("ROL : " + ele.getAuthority());
-		 * 
-		 * model.addAttribute("mensaje",miAut.getAuthorities());
-		 * miSesion.setAttribute("usuario", miUsuario); return "redirect:/";
-		 * 
-		 * }else {
-		 */
 		if (error != null)
 			model.addAttribute("mensaje", "Error -> Su usuario y/o contraseña son incorrectos");
 
@@ -146,7 +134,7 @@ public class HomeController implements ErrorController {
 		model = prepWeb.envia(model);
 
 		return "home/formLogin";
-		// }
+
 
 	}
 
