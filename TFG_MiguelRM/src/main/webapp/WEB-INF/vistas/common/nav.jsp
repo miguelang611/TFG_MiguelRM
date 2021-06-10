@@ -4,7 +4,7 @@
 <header class="oleez-header">
 	<nav class="navbar navbar-expand-lg navbar-light">
 		<a class="navbar-brand" href="/"><img
-			src="/resources/js_css/assets/images/Logo_2.svg" alt="Oleez"></a>
+			src="/resources/media/Logo2.png" alt="MRM Performance"></a>
 		<ul class="nav nav-actions d-lg-none ml-auto">
 							<sec:authorize access="isAnonymous()">
 				<li class="nav-item"><a class="nav-link" href="/login">Login</a>

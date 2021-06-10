@@ -3,7 +3,7 @@
 			<div class="footer-content">
 				<div class="row">
 					<div class="col-md-6">
-						<img src="/resources/js_css/assets/images/Logo_1.svg" alt="oleez"
+						<img src="/resources/media/Logo1.png" alt="MRM Performance"
 							class="footer-logo">
 						<p class="footer-intro-text">¡No seas tímido y únete a nosotros!</p>
 						<nav class="footer-social-links">
