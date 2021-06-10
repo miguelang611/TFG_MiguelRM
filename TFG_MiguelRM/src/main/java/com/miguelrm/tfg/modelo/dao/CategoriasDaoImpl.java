@@ -15,13 +15,6 @@ import com.miguelrm.tfg.modelo.repository.CategoriasRepository;
 @Service
 public class CategoriasDaoImpl implements IntCategoriasDao {
 	
-	/* RESPECTRO AL ANTERIOR TIPOSDAOIMPL:
-	 * 
-	 * Se ha mejorado la sección de insertar --> verifica que no haya un noticia con ese id, o que coincidan los datos de dentro
-	 * 
-	 * Se ha añadido la opción de encontrar por palabra --> busca primero en nombre y luego en descripción
-	 * 
-	 */
 
 	@Autowired
 	CategoriasRepository miCategoriasRepo;
@@ -77,7 +70,6 @@ public class CategoriasDaoImpl implements IntCategoriasDao {
 	}
 	
 	
-	/* MÉTODO NUEVO */
 	@Override
 	public ListaCategoriasMensaje devuelveByPalabra(String palabra) {
 		List<Categoria> miListaCategorias = null;

@@ -1,10 +1,8 @@
 package com.miguelrm.tfg.controlador;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,18 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.miguelrm.tfg.modelo.beans.Evento;
 import com.miguelrm.tfg.modelo.beans.Reserva;
 import com.miguelrm.tfg.modelo.beans.Usuario;
-import com.miguelrm.tfg.modelo.beans.Evento;
+import com.miguelrm.tfg.modelo.dao.IntEventosDao;
 import com.miguelrm.tfg.modelo.dao.IntReservasDao;
 import com.miguelrm.tfg.servicios.IntPreparaServ;
-import com.miguelrm.tfg.servicios.PreparaServImpl;
-import com.miguelrm.tfg.modelo.dao.IntEventosDao;
 
 
-/* ================================================== CONTROLADOR DE EVENTOS ================================================== 
+/* ================================================== CONTROLADOR DE RESERVAS ================================================== 
  * 
- * Se trata del controlador "principal", ya que cuenta con más funciones que su hermano de eventos
+ * Similar a la versión de gestión. FILTRA POR FECHAS LAS RESERVAS
  * 
 /* ============================================================================================================================ 
  */
@@ -159,48 +156,7 @@ public class ReservasPublicController {
 	
 
 	
-
-
-	/*
-	 * =================================== MÉTODO VERPORTIPO ==================================== 
-	 * 
-	 * 0. Entramos por GET, y tenemos de entrada el Model y el id por PathVariable
-	 * 
-	 * 1. Llamamos al método devuelvePorEvento() del reservasDao, pasando el id del evento,
-	 * y almacenamos la lista de reservas y el mensaje
-	 * 
-	 * 2. Si la lista de reservas no es nula y el mensaje es nulo, tenemos conexión a la BD -->
-	 * Recuperamos la lista de eventos
-	 * 
-	 * 3. Si la lista de reservas tiene tamaño 0, y la recuperación de lista de eventos es correcta,
-	 * porque el array tiene 1 evento --> el evento existe, pero no hay reservas
-	 * 
-	 * Si el array está vacío, es que no existe ningún evento con ese id
-	 * 
-	 * (Si viene con mensaje ya sabemos que habrá fallado la conexión a BD)
-	 * 
-	 * 4. Agregamos el nombre del evento para indicarlo en el jsp (si lo anterior se ha verificado)
-	 * 
-	 * 5. Agregamos al model el mensaje, la lista de reservas, y el evento de lista
-	 * que estamos mandando, para que se muestre correctamente en el jsp de listaReservas
-	 * y el origen, de cara al uso de otras funciones
-	 * 
-	 * =========================================================================================== 
-	 */
-	
 		
-	/*
-	@GetMapping("/create/{url}")
-	public String goToNuevo(Model model, @PathVariable(name = "url") String origen) {
-
-		
-		model = prepWeb.envia(model);
-		model.addAttribute("accion", "CREACIÓN");
-		model.addAttribute("destino", "/cliente/reservas/procesaCreate/"+origen);
-
-		return "reservas/formReserva";
-
-	}*/
 	
 	@GetMapping("/editar/{id}/{url}")
 	public String editar(Model model, @PathVariable(name = "id") int idreserva, @PathVariable(name = "url") String origen) {
@@ -208,7 +164,6 @@ public class ReservasPublicController {
 		List<Reserva> listaReservas = reservasDao.devuelvePorId(idreserva).getListaReservas();
 		String mensaje = reservasDao.devuelvePorId(idreserva).getMensaje();
 		Reserva reserva = null;
-		boolean reservaOK = false;
 		if (listaReservas != null) {
 			if (listaReservas.size() == 1 && mensaje == null) {
 				 reserva = listaReservas.get(0);
@@ -221,15 +176,11 @@ public class ReservasPublicController {
 				model.addAttribute("evento", evento);
 				model.addAttribute("accion", "EDICIÓN");
 				model.addAttribute("destino", "/cliente/reservas/procesaEditar/"+origen);
-				reservaOK = true;
 				
 				
 			}
 		}
-/*
-		if (reservaOK) {
-			model = prepWeb.envia(model);
-		}*/
+
 
 		model.addAttribute("mensaje", mensaje);
 

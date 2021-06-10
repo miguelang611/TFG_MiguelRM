@@ -18,7 +18,6 @@ public interface NoticiasRepository extends JpaRepository<Noticia, Integer>{
 	@Query("select e from Noticia e where e.categoria.idCategoria = ?1")
 	public List<Noticia> findByCategoria(int idCategoria);
 	
-	/* MÉTODOS NUEVOS */
 	public List<Noticia> findByNombreContains(String palabra);
 	
 	public List<Noticia> findBySubtituloContains(String palabra);

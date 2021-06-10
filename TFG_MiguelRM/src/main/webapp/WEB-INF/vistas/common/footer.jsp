@@ -5,8 +5,7 @@
 					<div class="col-md-6">
 						<img src="/resources/js_css/assets/images/Logo_1.svg" alt="oleez"
 							class="footer-logo">
-						<p class="footer-intro-text">Don't be shy, get in touch with
-							us and create the world again!</p>
+						<p class="footer-intro-text">¡No seas tímido y únete a nosotros!</p>
 						<nav class="footer-social-links">
 							<a href="#!">Fb</a> <a href="#!">Tw</a> <a href="#!">In</a> <a
 								href="#!">Be</a>
@@ -15,23 +14,23 @@
 					<div class="col-md-6">
 						<div class="row">
 							<div class="col-md-6 footer-widget-text">
-								<h6 class="widget-title">PHONE</h6>
-								<p class="widget-content">+80 (0)5 12 34 95 89</p>
+								<h6 class="widget-title">TELÉFONO</h6>
+								<p class="widget-content">+34 672 50 59 22</p>
 							</div>
 							<div class="col-md-6 footer-widget-text">
-								<h6 class="widget-title">ENQUIRUES</h6>
-								<p class="widget-content">info@oleez.site</p>
+								<h6 class="widget-title">EMAIL</h6>
+								<p class="widget-content">miguelang611@gmail.com</p>
 							</div>
 							<div class="col-md-6 footer-widget-text">
-								<h6 class="widget-title">ADDRESS</h6>
+								<h6 class="widget-title">DIRECCIÓN</h6>
 								<p class="widget-content">
-									33 rue Burdeau 69089 <br> Paris France
+									En un lugar de... <br> España
 								</p>
 							</div>
 							<div class="col-md-6 footer-widget-text">
-								<h6 class="widget-title">WORK HOURS</h6>
+								<h6 class="widget-title">HORARIO</h6>
 								<p class="widget-content">
-									Weekdays: 09:00 - 18:00 <br> Weekends: 11:00 - 17:00
+									Laborable: 10:00 - 21:00 <br> Fines de semana: 11:00 - 17:00
 								</p>
 							</div>
 						</div>

@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.miguelrm.tfg.modelo.beans.Evento;
 import com.miguelrm.tfg.modelo.beans.Tipo;
 import com.miguelrm.tfg.modelo.dao.IntEventosDao;
 import com.miguelrm.tfg.modelo.dao.IntTiposDao;
 import com.miguelrm.tfg.servicios.IntPreparaServ;
-import com.miguelrm.tfg.servicios.PreparaServImpl;
 
 /* ================================================== CONTROLADOR DE TIPOS ================================================== 
  * 

@@ -6,27 +6,19 @@
 		<a class="navbar-brand" href="/"><img
 			src="/resources/js_css/assets/images/Logo_2.svg" alt="Oleez"></a>
 		<ul class="nav nav-actions d-lg-none ml-auto">
-			<li class="nav-item active"><a class="nav-link" href="#!"
-				data-toggle="searchModal"> <img
-					src="/resources/js_css/assets/images/search.svg" alt="search">
-			</a></li>
-			<li class="nav-item nav-item-cart"><a class="nav-link" href="#!">
-					<span class="cart-item-count">0</span> <img
-					src="/resources/js_css/assets/images/shopping-cart.svg"
-					alt="cart">
-			</a></li>
-			<li class="nav-item dropdown d-none d-sm-block"><a
-				class="nav-link dropdown-toggle" href="#!" id="languageDropdown"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ENG</a>
-				<div class="dropdown-menu" aria-labelledby="languageDropdown">
-					<a class="dropdown-item" href="#!">ARB</a> <a class="dropdown-item"
-						href="#!">FRE</a>
-				</div></li>
-			<li class="nav-item"><a class="nav-link" href="#!"
-				data-toggle="offCanvasMenu"> <img
-					src="/resources/js_css/assets/images/social icon@2x.svg"
-					alt="social-nav-toggle">
-			</a></li>
+							<sec:authorize access="isAnonymous()">
+				<li class="nav-item"><a class="nav-link" href="/login">Login</a>
+				</li>
+				</sec:authorize>
+				<sec:authorize access="isAuthenticated()">
+
+										<li class="nav-item"><a class="nav-link" href="/cliente/reservas/todas">Reservas</a>
+				</li>
+				<li class="nav-item"><a class="nav-link" href="/logout">Logout</a>
+				</li>
+												<li class="nav-item"><a class="nav-link" href="#">¡¡Hola ${usuario.nombre}!!</a>
+				</li>
+				</sec:authorize>
 		</ul>
 		<button class="navbar-toggler d-lg-none" type="button"
 			data-toggle="collapse" data-target="#oleezMainNav"
@@ -38,8 +30,7 @@
 			<ul class="navbar-nav mx-auto mt-2 mt-lg-0">
 				<li class="nav-item"><a class="nav-link" href="/">Home</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="about.html">About</a>
-				</li>
+
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#!" id="pagesDropdown"
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Eventos</a>
@@ -51,6 +42,8 @@
 							<a class="dropdown-item" href="/eventos/tipo/${miTipo.idTipo}">${miTipo.nombre}</a>
 						</c:forEach>
 					</div></li>
+					<li class="nav-item"><a class="nav-link" href="#">Coches Nuevos</a>
+					</li>
 					<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#!" id="pagesDropdown"
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Noticias</a>
@@ -62,6 +55,11 @@
 							<a class="dropdown-item" href="/noticias/categoria/${miCategoria.idCategoria}">${miCategoria.nombre}</a>
 						</c:forEach>
 					</div></li>
+					<li class="nav-item"><a class="nav-link" href="#">Contacto</a>
+					</li>
+					<li class="nav-item"><a class="nav-link" href="#">Conócenos</a>
+					</li>
+					<!--  
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#!" id="portfolioDropdown"
 					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Portfolio</a>
@@ -79,7 +77,7 @@
 							Standard</a> <a class="dropdown-item" href="blog-grid.html">Blog
 							grid</a> <a class="dropdown-item" href="blog-single.html">Blog
 							Post</a>
-					</div></li>
+					</div></li>-->
 			</ul>
 			
 			<ul class="navbar-nav d-none d-lg-flex">

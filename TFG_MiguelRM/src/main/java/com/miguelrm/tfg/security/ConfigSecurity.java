@@ -29,45 +29,7 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	"inner join Perfiles p on p.id_perfil = up.id_Perfil " +  "where u.email = ?");
 
 }
-/*
-@Override
-protected void configure(HttpSecurity http) throws Exception {
 
-
-	
-		http.authorizeRequests()
-		// Los recursos estÃ¡ticos no requieren autenticaciÃ³n
-//		.antMatchers(
-//		"/bootstrap/**",  "/images/**",  "/tinymce/**",  "/logos/**").permitAll()
-		
-		// Asignar permisos a URLs por ROLES
-		.antMatchers("/tipos/**").hasAnyAuthority("redactor","admin")
-		.antMatchers("/gestion/eventos/**").hasAnyAuthority("organizador","admin")
-		.antMatchers("/gestion/noticias/**").hasAnyAuthority("redactor","admin")
-		.antMatchers("/app/perfiles/**").hasAnyAuthority("ADMINISTRADOR")
-		
-		// Las vistas pÃºblicas no requieren autenticaciÃ³n
-		.antMatchers("/",
-		"/login",
-		"/registro",
-		"/search",
-		"/eventos/**",
-		"/noticias/**",
-		"/doLogin",
-		"/resources/**"
-		).permitAll()
-		
-
-		
-		// Todas las demÃ¡s URLs de la AplicaciÃ³n requieren autenticaciÃ³n
-		.anyRequest().authenticated()
-		
-		// El formulario de Login no requiere autenticacion
-		//.and().formLogin().permitAll();
-		.and().defaultSuccessUrl("/doLogin").formLogin().loginPage("/login").permitAll()
-		.and().csrf().disable();
-	
-}*/
 
 @Override
 public void configure(HttpSecurity http) throws Exception {

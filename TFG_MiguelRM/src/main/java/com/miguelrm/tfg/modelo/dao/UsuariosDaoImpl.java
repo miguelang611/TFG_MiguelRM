@@ -78,30 +78,9 @@ public class UsuariosDaoImpl implements IntUsuariosDao {
 		List<Usuario> miListaNueva = null;
 		String mensaje = null;
 		try {
-			// Hemos definido este método en el UsuariosRepository,
-			// que interpreta a través de JPARepository
 			miListaUsuarios = miUsuariosRepo.findAll();
 			miListaNueva = miListaUsuarios;
-			/*if(miListaUsuarios != null && miListaUsuarios.size()>0) {
-				miListaNueva = miUsuariosRepo.findByEmailContains("");
-				for(int i=0; i<miListaUsuarios.size(); i++) {
-					List<Reserva> listaReservas = reservasDao.devuelveByUsuario(miListaUsuarios.get(i).getEmail()).getListaReservas();
-					List<>
-					if(listaReservas != null && listaReservas.size() >= 0 ) {
-						boolean containsActivos = false;
-						for(int a=0; a<listaReservas.size(); a++) {
-							if(listaReservas.get(a).getEstado().equals("activo")) {
-								containsActivos = true;
-							}
-						}
-						if(containsActivos) {
-							miListaNueva.add(miListaUsuarios.get(i));
-						}
-					}
-				}
-			}else {
-				miListaNueva = miListaUsuarios;
-			}*/
+
 		} catch (Exception e) {
 			mensaje = "Error de conexión a la BBDD";
 			e.printStackTrace();

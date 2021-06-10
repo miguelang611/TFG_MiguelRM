@@ -12,7 +12,6 @@ import com.miguelrm.tfg.modelo.beans.Evento;
 import com.miguelrm.tfg.modelo.repository.ReservasRepository;
 import com.miguelrm.tfg.modelo.repository.EventosRepository;
 
-//Indicamos que este DaoImpl es el único que implementará UserService de Spring
 @Service
 public class ReservasDaoImpl implements IntReservasDao {
 	
@@ -99,58 +98,6 @@ public class ReservasDaoImpl implements IntReservasDao {
 		ListaReservasMensaje miListaReservasMensaje = new ListaReservasMensaje(miListaReservas, mensaje);
 		return miListaReservasMensaje;
 	}
-
-	/*
-	@Override
-	public ListaReservasMensaje devuelveByPalabra(String palabra) {
-		List<Reserva> miListaReservas = null;
-		String mensaje = null;
-		try {
-
-			List<Reserva> miListaEvNombre = miReservasRepo.findByNombreContains(palabra);
-			if (miListaEvNombre != null) {
-				List<Reserva> miListaEvDescripcion = miReservasRepo.findByDescripcionContains(palabra);
-				// Si no había encontrado nada por nombre, la lista lo que encuentre por
-				// descripción
-				if (miListaEvNombre.size() == 0) {
-					miListaReservas = miListaEvDescripcion;
-
-					// PERO, si la lista obtenida por nombre tiene algún dato,
-					// leeremos la lista obtenida por descripción
-					// y comprobaremos objeto a objeto contra la otra lista
-					// Si no lo contiene, añadimos dicho objeto a la liista original
-				} else {
-					miListaReservas = miListaEvNombre;
-					for (int i = 0; i < miListaEvDescripcion.size(); i++) {
-						Reserva miReserva = miListaEvDescripcion.get(i);
-						if (!miListaReservas.contains(miReserva)) {
-							miListaReservas.add(miReserva);
-						}
-					}
-				}
-
-			}
-		} catch (Exception e) {
-			mensaje = "Error de conexión a la BBDD";
-			e.printStackTrace();
-		}
-		ListaReservasMensaje miListaReservasMensaje = new ListaReservasMensaje(miListaReservas, mensaje);
-		return miListaReservasMensaje;
-	}
-
-	// Para cancelar la reserva, subyace una modificación del mismo
-	/*
-	 * 1. Recuperamos una reserva intermedio por id
-	 * 
-	 * 2. En ese reserva intermedio, cambiamos el estado a cancelado y forzamos no
-	 * destacado
-	 * 
-	 * 3. Ejecutamos save de ese reserva intermedio
-	 * 
-	 * 4. Devolvemos mensaje, confirmando éxito o indicando causa del error
-	 * 
-	 */
-
 
 	/*
 	 * 1. Recuperamos un reserva intermedio por id, para comprobar que exista

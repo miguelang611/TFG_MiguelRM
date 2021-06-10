@@ -1,25 +1,20 @@
 package com.miguelrm.tfg.controlador;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.miguelrm.tfg.modelo.beans.Noticia;
 import com.miguelrm.tfg.modelo.beans.Categoria;
+import com.miguelrm.tfg.modelo.beans.Noticia;
+import com.miguelrm.tfg.modelo.dao.IntCategoriasDao;
 import com.miguelrm.tfg.modelo.dao.IntNoticiasDao;
 import com.miguelrm.tfg.servicios.IntPreparaServ;
-import com.miguelrm.tfg.servicios.PreparaServImpl;
-import com.miguelrm.tfg.modelo.dao.IntCategoriasDao;
 
 
 /* ================================================== CONTROLADOR DE NOTICIAS ================================================== 
@@ -51,32 +46,9 @@ public class NoticiasPublicController {
 	IntPreparaServ prepWeb;
 
 	 
-	/////////////////////////////////////// BLOQUE 1 --> LISTA  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-	/*
-	 * ==================================== MÉTODO VERACTIVOS ===================================== 
-	 * 
-	 * 0. Entramos por GET, y solo tenemos de entrada el Model
-	 * 
-	 * 1. Llamamos al método devuelveActivos() del noticiasDao, y almacenamos la lista de noticias
-	 * y el mensaje --> tenemos un Beans para devolver ambas cosas.
-	 * 
-	 * 2. Si la lista no es nula, el mensaje es nulo, y el tamaño es 0 --> la conexión y todo es
-	 * correcto, sólo que no hay noticias activos
-	 * 
-	 * 3. Si el mensaje es nulo, es decir, es todo correcto, llamamos a prepWeb.envia, para que
-	 * nos traiga la lista de categorias en el model y luego poder usarla en el nav
-	 * 
-	 * 4. Agregamos al model el mensaje, la lista de noticias, el categoria de lista
-	 * que estamos mandando, para que se muestre correctamente en el jsp de listaNoticias,
-	 * y el origen, de cara al uso de otras funciones
-	 * 
-	 * =========================================================================================== 
-	 */
-
 	
 	@GetMapping("")
-	public String verActivos(Model model) {
+	public String verTodas(Model model) {
 
 		List<Noticia> listaNoticias = noticiasDao.devuelveTodos().getListaNoticias();
 		String mensaje = noticiasDao.devuelveTodos().getMensaje();
@@ -162,7 +134,7 @@ public class NoticiasPublicController {
 	}
 	
 	/*
-	 * =================================== MÉTODO VERPORTIPO ==================================== 
+	 * =================================== MÉTODO VERPORCATEGORIA ==================================== 
 	 * 
 	 * 0. Entramos por GET, y tenemos de entrada el Model y el id por PathVariable
 	 * 

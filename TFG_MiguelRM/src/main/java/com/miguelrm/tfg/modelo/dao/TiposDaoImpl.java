@@ -15,13 +15,6 @@ import com.miguelrm.tfg.modelo.repository.TiposRepository;
 @Service
 public class TiposDaoImpl implements IntTiposDao {
 	
-	/* RESPECTRO AL ANTERIOR TIPOSDAOIMPL:
-	 * 
-	 * Se ha mejorado la sección de insertar --> verifica que no haya un evento con ese id, o que coincidan los datos de dentro
-	 * 
-	 * Se ha añadido la opción de encontrar por palabra --> busca primero en nombre y luego en descripción
-	 * 
-	 */
 
 	@Autowired
 	TiposRepository miTiposRepo;

@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.miguelrm.tfg.modelo.beans.Noticia;
 import com.miguelrm.tfg.modelo.beans.Categoria;
 import com.miguelrm.tfg.modelo.dao.IntNoticiasDao;
 import com.miguelrm.tfg.servicios.IntPreparaServ;
-import com.miguelrm.tfg.servicios.PreparaServImpl;
 import com.miguelrm.tfg.modelo.dao.IntCategoriasDao;
 
-/* ================================================== CONTROLADOR DE TIPOS ================================================== 
+/* ================================================== CONTROLADOR DE CATEGORIAS ================================================== 
  * 
  * Se trata del controlador "secundario", ya que cuenta con muchas menos funciones que su hermano de noticias
  * 
@@ -147,7 +145,6 @@ public class CategoriasController {
 		System.out.println(mensaje);
 		
 		miRedirAttrib.addFlashAttribute("mensaje",mensaje);
-		//miRedirAttrib.addFlashAttribute("urlDestino","/gestion/categorias");
 
 		
 		System.out.println(categoria);

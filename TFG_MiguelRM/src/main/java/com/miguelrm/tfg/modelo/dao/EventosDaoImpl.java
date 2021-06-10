@@ -15,17 +15,7 @@ import com.miguelrm.tfg.modelo.repository.TiposRepository;
 //Indicamos que este DaoImpl es el único que implementará UserService de Spring
 @Service
 public class EventosDaoImpl implements IntEventosDao {
-	
-	/* RESPECTRO AL ANTERIOR EVENTOSDAOIMPL:
-	 * 
-	 * Se ha modificado la parte de estado y destacados, para poder recibir parámetros
-	 * 
-	 * Se ha mejorado la sección de insertar --> verifica que no haya un evento con ese id, o que coincidan los datos de dentro
-	 * 
-	 * Se ha añadido el método de encontrar por palabra --> se divide en 2 métodos del repository, primero busca la palabra en nombres
-	 * y luego en descripciones
-	 * 
-	 */
+
 
 	@Autowired
 	EventosRepository miEventosRepo;

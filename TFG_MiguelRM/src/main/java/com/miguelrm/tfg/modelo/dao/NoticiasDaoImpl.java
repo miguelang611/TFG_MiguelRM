@@ -16,17 +16,6 @@ import com.miguelrm.tfg.modelo.repository.CategoriasRepository;
 @Service
 public class NoticiasDaoImpl implements IntNoticiasDao {
 	
-	/* RESPECTRO AL ANTERIOR EVENTOSDAOIMPL:
-	 * 
-	 * Se ha modificado la parte de destacadas, para poder recibir parámetros
-	 * 
-	 * Se ha mejorado la sección de insertar --> verifica que no haya un noticia con ese id, o que coincidan los datos de dentro
-	 * 
-	 * Se ha añadido el método de encontrar por palabra --> se divide en 2 métodos del repository, primero busca la palabra en nombres
-	 * y luego en subtituloes
-	 * 
-	 */
-
 	@Autowired
 	NoticiasRepository miNoticiasRepo;
 
