@@ -11,7 +11,7 @@
 <c:if test="${mensaje != null}">
 	<title>Error</title>
 </c:if>
-<title>Reservas ${categoria}</title>
+<title>${tipo}</title>
 </head>
 
 <body>
@@ -22,7 +22,7 @@
 <main class="blog-post-single" style="padding: 50px">
 <div class="container">
 <div class="page-header wow fadeInUp text-center">
-					<h1 class="page-title">Reservas ${tipo}</h1>
+					<h1 class="page-title">${tipo}</h1>
 					<p class="result-count">Mostrando ${miListaReservas.size()}
 						reservas</p>
 			<a href="/eventos" class="btn btn-primary btn-sm">Nueva
@@ -58,8 +58,17 @@
 <c:if test="${miListaReservas.size() != 0}">
 			<table class="table table-striped table-sm fadeInUp wow">
 				<th>Id Reserva</th>
+				<c:if test="${tipo.contains('Mis')}">
+				<th>Nombre</th>
+				<th>Fecha</th>
+				</c:if>
+				<c:if test="${tipo.contains('evento') }">
+				<th>Cliente</th>
+				</c:if>
+				<c:if test="${tipo.contains('Todas') }">
 				<th>Evento</th>
-				<th>Fecha Evento</th>
+				<th>Email</th>
+				</c:if>
 				<th>Cantidad</th>
 				<th></th>
 				<th></th>
@@ -67,17 +76,27 @@
 				<c:forEach var="reserva" items="${miListaReservas}">
 					<tr>
 						<td>${reserva.idReserva}</td>
+						<c:if test="${tipo.contains('Mis')}">
 						<td>${reserva.evento.nombre}</td>
 						<td>${reserva.evento.fechaInicio}</td>
+						</c:if>
+						<c:if test="${tipo.contains('evento') }">
+						<td>${reserva.usuario.email }
+						</c:if>
+						<c:if test="${tipo.contains('Todas') }">
+						<td>${reserva.evento.nombre}</td>
+						<td>${reserva.usuario.email}</td>
+						</c:if>
+						
 						<td>${reserva.cantidad}</td>
 
 						
 
 
-						<td><a href="/gestion/reservas/editar/${reserva.idReserva}${origen}"
-							class="btn btn-info btn-sm">Detalle</a></td>
+						<td><a href="/eventos/detalle/${reserva.evento.idEvento}"
+							class="btn btn-info btn-sm">Detalle Evento</a></td>
 
-						<td><a href="/gestion/reservas/eliminar/${reserva.idReserva}${origen}"
+						<td><a href="/cliente/reservas/eliminar/${reserva.idReserva}${origen}"
 							class="btn btn-danger btn-sm">Cancelar</a></td>
 
 					</tr>

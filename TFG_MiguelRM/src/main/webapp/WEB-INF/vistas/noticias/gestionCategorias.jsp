@@ -24,7 +24,7 @@
 		<div class="container">
 			<div class="page-header wow fadeInUp text-center">
 				<h1 class="page-title">Categorias</h1>
-				<p class="result-count">Mostrando ${listaCategoriasFull.size()} categorias</p>
+				<p class="result-count">Mostrando ${listaCategorias.size()} categorias</p>
 				<a href="/gestion/categorias/create${origen}"
 					class="btn btn-primary btn-sm">Nuevo Categoria</a>
 			</div>
@@ -64,7 +64,7 @@
 						<th></th>
 						<th></th>
 					</tr>
-					<c:forEach var="categoria" items="${listaCategoriasFull}">
+					<c:forEach var="categoria" items="${listaCategorias}">
 						<tr>
 							<td>${categoria.idCategoria}</td>
 							<td>${categoria.nombre}</td>

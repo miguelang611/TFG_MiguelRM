@@ -40,6 +40,30 @@ public class Reserva implements Serializable {
 	public Reserva() {
 	}
 
+	
+	
+	public Reserva(int idReserva, int cantidad, String observaciones, BigDecimal precioVenta, Usuario usuario,
+			Evento evento) {
+		super();
+		this.idReserva = idReserva;
+		this.cantidad = cantidad;
+		this.observaciones = observaciones;
+		this.precioVenta = precioVenta;
+		this.usuario = usuario;
+		this.evento = evento;
+	}
+	
+	public Reserva(int cantidad, String observaciones, Usuario usuario, Evento evento) {
+		super();
+		this.cantidad = cantidad;
+		this.observaciones = observaciones;
+		this.precioVenta = evento.getPrecio();
+		this.usuario = usuario;
+		this.evento = evento;
+	}
+
+
+
 	public int getIdReserva() {
 		return this.idReserva;
 	}

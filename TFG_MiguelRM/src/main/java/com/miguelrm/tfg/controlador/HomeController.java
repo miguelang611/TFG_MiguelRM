@@ -123,35 +123,55 @@ public class HomeController {
 	}
 
 	@GetMapping("/login")
-	public String toLogin(Model model, String error, String logout) {
-		
-        if (error != null)
-            model.addAttribute("mensaje", "Error -> Su usuario y/o contraseña son incorrectos");
-
-        if (logout != null)
-            model.addAttribute("mensaje", "Se ha cerrado la sesión correctamente");
-
-
-		//model = prepWeb.envia(model);
-
-		return "home/formLogin";
-
-	}
-
 	@PostMapping("/login")
-	public String doLogin(Model model, Authentication miAut, HttpSession miSesion) {
+	public String toLogin(Model model, String error, String logout, Authentication miAut, HttpSession miSesion) {
 
-		Usuario miUsuario = usuDao.devuelvePorEmail(miAut.getName()).getListaUsuarios().get(0);
+		/*if (miAut != null) {
+			Usuario miUsuario = usuDao.devuelvePorEmail(miAut.getName()).getListaUsuarios().get(0);
+			
+			for (GrantedAuthority ele : miAut.getAuthorities())
+				System.out.println("ROL : " + ele.getAuthority());
 
-		for (GrantedAuthority ele : miAut.getAuthorities())
-			System.out.println("ROL : " + ele.getAuthority());
+			model.addAttribute("mensaje",miAut.getAuthorities());
+			miSesion.setAttribute("usuario", miUsuario);
+			return "redirect:/";
+			
+		}else {*/
+	        if (error != null)
+	            model.addAttribute("mensaje", "Error -> Su usuario y/o contraseña son incorrectos");
 
-		model.addAttribute("mensaje",miAut.getAuthorities());
-		miSesion.setAttribute("usuario", miUsuario);
+	        if (logout != null)
+	            model.addAttribute("mensaje", "Se ha cerrado la sesión correctamente");
 
-		return "redirect:/eventos";
+
+			model = prepWeb.envia(model);
+
+			return "home/formLogin";
+		//}
+		
+		
+
 
 	}
+	
+	@GetMapping("/doLogin")
+	public String doLogin(Model model, String error, String logout, Authentication miAut, HttpSession miSesion) {
+
+		
+			Usuario miUsuario = usuDao.devuelvePorEmail(miAut.getName()).getListaUsuarios().get(0);
+			
+			for (GrantedAuthority ele : miAut.getAuthorities())
+				System.out.println("ROL : " + ele.getAuthority());
+
+			model.addAttribute("mensaje",miAut.getAuthorities());
+			miSesion.setAttribute("usuario", miUsuario);
+			return "redirect:/eventos/destacados";
+		
+	}
+	
+	
+
+	
 
 
 	@PostMapping("/registro")

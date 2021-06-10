@@ -64,10 +64,21 @@
 								<article class="product-card wow fadeInUp">
 
 
-									<form class="btn-wrapper">
-										<button class="btn btn-add-to-cart" type="submit" disabled
-											formaction="/eventos/comprar/${evento.idEvento}${origen}">
+									<form class="btn-wrapper" action="/cliente/reservas/do/${evento.idEvento}"
+											method="POST">
+										<sec:authorize access="isAuthenticated()">
+																					<label for="cantidad">Cantidad</label>
+											<input
+												type="number" min="1" max="10" step="1" name="cantidad" required></input>
+											<button class="btn btn-add-to-cart" type="submit">
 											Comprar</button>
+										</sec:authorize>
+										<sec:authorize access="isAnonymous()">
+																				<button class="btn btn-add-to-cart" type="submit"
+											formaction="/cliente/reservas/doDirecto">
+											Comprar</button>
+										</sec:authorize>
+										
 									</form>
 								</article>
 
@@ -78,6 +89,8 @@
 							</div>
 
 						</div>
+						
+											
 
 					</div>
 					<aside class="col-md-4">

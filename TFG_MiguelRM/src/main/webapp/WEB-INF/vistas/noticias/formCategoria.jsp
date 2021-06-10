@@ -98,7 +98,7 @@
 <!-- Header -->
 		<header class="text-center">
 			<br>
-			<h1>FORMULARIO DE ${accion} DE TIPOS</h1>
+			<h1>FORMULARIO DE ${accion} DE CATEGORÍAS</h1>
 			<h1>${mensaje}</h1>
 			<br>
 		</header>
@@ -112,7 +112,7 @@ mucho más simple por la menor cantidad de datos de categoria vs noticia
 -->
 		<main>
 			<form class="row g-3 needs-validation justify-content-center"
-				novalidate action="${destino}" method="get">
+				novalidate action="${destino}" method="POST">
 
 
 				<c:if test="${accion.equals('EDICIÓN')}">

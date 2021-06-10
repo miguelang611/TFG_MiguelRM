@@ -50,7 +50,7 @@ public class TiposController {
 
 		model = prepWeb.envia(model);
 		
-		return "gestionTipos";
+		return "eventos/gestionTipos";
 		 
 	}
 	
@@ -81,7 +81,7 @@ public class TiposController {
 		model.addAttribute("accion","CREACIÓN");
 		model.addAttribute("destino","/gestion/tipos/procesaCreate");
 		
-		return "formTipo";	 
+		return "eventos/formTipo";	 
 		
 	}
 	
@@ -125,7 +125,7 @@ public class TiposController {
 
 		model.addAttribute("mensaje", mensaje);
 
-		return "formTipo";	 
+		return "eventos/formTipo";	 
 		 
 	}
 	

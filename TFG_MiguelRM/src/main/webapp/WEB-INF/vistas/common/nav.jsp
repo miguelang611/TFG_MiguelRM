@@ -83,29 +83,19 @@
 			</ul>
 			
 			<ul class="navbar-nav d-none d-lg-flex">
-				<li class="nav-item active"><a class="nav-link nav-link-btn"
-					href="#!" data-toggle="searchModal"> <img
-						src="/resources/js_css/assets/images/search.svg"
-						alt="search">
-				</a></li>
-				<li class="nav-item nav-item-cart"><a
-					class="nav-link nav-link-btn" href="#!"> <span
-						class="cart-item-count">0</span> <img
-						src="/resources/js_css/assets/images/shopping-cart.svg"
-						alt="cart">
-				</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle " href="#!" id="languageDropdown"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ES</a>
-					<div class="dropdown-menu" aria-labelledby="languageDropdown">
-						<a class="dropdown-item" href="#!">EN</a> <a
-							class="dropdown-item" href="#!">FRE</a>
-					</div></li>
-				<li class="nav-item ml-5"><a class="nav-link pr-0 nav-link-btn"
-					href="#!" data-toggle="offCanvasMenu"> <img
-						src="/resources/js_css/assets/images/social icon@2x.svg"
-						alt="social-nav-toggle">
-				</a></li>
+				<sec:authorize access="isAnonymous()">
+				<li class="nav-item"><a class="nav-link" href="/login">Login</a>
+				</li>
+				</sec:authorize>
+				<sec:authorize access="isAuthenticated()">
+
+										<li class="nav-item"><a class="nav-link" href="/cliente/reservas/todas">Reservas</a>
+				</li>
+				<li class="nav-item"><a class="nav-link" href="/logout">Logout</a>
+				</li>
+												<li class="nav-item"><a class="nav-link" href="#">¡¡Hola ${usuario.nombre}!!</a>
+				</li>
+				</sec:authorize>
 			</ul>
 		
 		</div>
@@ -149,10 +139,12 @@
 					</div></li>
 				<li class="nav-item"><a class="nav-link" href="/gestion/tipos">Tipos</a>
 				</li>
+			<li class="nav-item"><a class="nav-link" href="/gestion/reservas/todas">Reservas</a>
+				</li>
 					
 			</ul>
 					<div class="nav-item">
-			ADMIN
+			ROL: ${usuario.perfil.nombre}
 			</div>
 
 		</div>
@@ -194,7 +186,9 @@
 					
 			</ul>
 					<div class="nav-item">
-			ADMIN
+			
+			ROL: ${usuario.perfil.nombre}
+
 			</div>
 
 		</div>

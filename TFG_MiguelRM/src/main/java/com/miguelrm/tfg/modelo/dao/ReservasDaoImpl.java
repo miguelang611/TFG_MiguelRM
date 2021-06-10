@@ -294,41 +294,95 @@ public class ReservasDaoImpl implements IntReservasDao {
 
 			String msgCheckID = devuelvePorId(miReserva.getIdReserva()).getMensaje();
 			System.out.println(msgCheckID);
+			
+			List<Reserva> lista = null;
+			List<Reserva> listaResEvento = null;
+			String rdo2 = "";
 
 			// Hay un reserva con ese ID
 			if (msgCheckID == null) {
 				insertarRdo = "Error -> No se puede insertar un reserva con dicho id, ya que en la BBDD hay otro reserva con dicho ID. ¡Verifíquelo!";
 			}
-
-			// El mensaje no viene vacío pero la lista lo está --> no hay reservas con ese id
-			if (msgCheckID != null && !msgCheckID.contains("Error") && !msgCheckID.contains("Error -> Reserva con ID 0 no encontrado")) {
-				List<Reserva> miListaTotal = devuelveTodos().getListaReservas();
-				String mensaje = devuelveTodos().getMensaje();
-				// Si no hay error
-				if (mensaje == null) {
-					// Y el reserva no está en la lista de reservas
-					// (compara por debajo, pero excluye evento, destcado e id)
-					if (!miListaTotal.contains(miReserva)) {
-						// Si no esá, guardamos
-						miReservasRepo.save(miReserva);
-						insertarRdo = "La reserva de " + miReserva.getEvento().getNombre()+ " se ha insertado correctamente";
-					}
-					// En caso contrario, no hacemos la inserción
-					else {
-						insertarRdo = "Error -> No se puede insertar un reserva que ya existe. Si lo desea, puede editarlo";
-					}
-				} else {
-					insertarRdo = mensaje;
-				}
-			}
-
+			
+			boolean isNotRepeated = true;
 			if(msgCheckID != null && msgCheckID.contains("Error -> Reserva con ID 0 no encontrado")) {
 				
-				miReservasRepo.save(miReserva);
-				insertarRdo = "La reserva de " + miReserva.getEvento().getNombre()+ " se ha insertado correctamente";
+				lista = devuelveByEmail(miReserva.getUsuario().getEmail()).getListaReservas();
+				
+				
+				if(lista != null && lista.size() > 0) {
+					
+					for(int i = 0; i < lista.size(); i++) {
+						if(lista.get(i).getEvento().equals(miReserva.getEvento())) {
+							
+							insertarRdo = "Ya dispone de una reserva de este evento. Si lo desea puede aumentar la cantidad desde su panel de usuario";
+							isNotRepeated = false;
+						}
+					}
+				}
+								
+			}
 
+			boolean allOK = false;
+			if(isNotRepeated) {
+					
+				System.out.println("TEST");
+				listaResEvento = devuelveByEvento(miReserva.getEvento().getIdEvento()).getListaReservas();
+				
+				if (listaResEvento != null) {
+					System.out.println("NNNNNNNNNNNN");
+
+					int cantidadRes = 0;
+					if(listaResEvento.size() > 0) {
+						for(int i = 0; i < listaResEvento.size(); i++) {
+							
+							cantidadRes += listaResEvento.get(i).getCantidad();
+								
+						}
+						
+					}
+
+					int totalInicial = cantidadRes + miReserva.getCantidad();
+					int aforoMaximo = miReserva.getEvento().getAforoMaximo();
+					if(totalInicial > aforoMaximo) {
+						
+						System.out.println("POPPPPPPPPPPP");
+
+						
+						int cantidadSiReservable = aforoMaximo - cantidadRes;
+						if(cantidadSiReservable > 0) {
+							miReserva.setCantidad(cantidadSiReservable);
+							allOK = true;
+							rdo2 = "\n\rNOTA: Sólo quedaban "+cantidadSiReservable+" plazas disponibles, de modo que su reserva se ha reducido a dicha cantidad";
+							
+						}else {
+							System.out.println("QQQQQQQQQQQQQQQQQ");
+
+							insertarRdo = "Error --> No se puede realizar la reserva al superarse el aforo máximo";
+						}
+						
+					}else {
+						allOK = true;
+					}
+				}else {
+					allOK = true;
+				}
 				
 			}
+			
+			
+			if(allOK) {
+				try {
+					miReservasRepo.save(miReserva);
+					insertarRdo = "La reserva de " + miReserva.getEvento().getNombre()+ " se ha insertado correctamente";
+					insertarRdo += rdo2;
+				}catch(Exception e) {
+					insertarRdo = "Error --> no se pudo realizar reserva contra BBDD";
+				}
+
+			}
+			
+		
 			
 		} catch (Exception e) {
 			insertarRdo = "Error al insertar el reserva. Verifique que los datos a insertar son correctos";

@@ -71,6 +71,7 @@
 				<th></th>
 				<th></th>
 				<th></th>
+				<th></th>
 
 				<c:forEach var="evento" items="${miListaEventos}">
 					<tr>
@@ -112,6 +113,8 @@
 							<td><a href="/gestion/eventos/destacar/${evento.idEvento}${origen}/si"
 							class="btn btn-outline-success btn-sm">Destacar</a></td>
 							</c:if>
+						<td><a href="/gestion/reservas/evento/${evento.idEvento}"
+							class="btn btn-outline-info btn-sm">Reservas</a></td>
 						<td><a href="/gestion/eventos/eliminar/${evento.idEvento}${origen}"
 							class="btn btn-danger btn-sm">Eliminar</a></td>
 

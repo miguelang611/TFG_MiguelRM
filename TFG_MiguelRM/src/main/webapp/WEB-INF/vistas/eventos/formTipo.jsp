@@ -112,7 +112,7 @@ mucho más simple por la menor cantidad de datos de tipo vs evento
 -->
 		<main>
 			<form class="row g-3 needs-validation justify-content-center"
-				novalidate action="${destino}" method="get">
+				novalidate action="${destino}" method="POST">
 
 
 				<c:if test="${accion.equals('EDICIÓN')}">
